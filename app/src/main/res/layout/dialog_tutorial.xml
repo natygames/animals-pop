@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription">
+
+    <ImageView
+        android:id="@+id/image_dialog"
+        android:layout_width="@dimen/dialog_width"
+        android:layout_height="0dp"
+        android:background="@drawable/dialog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_tutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_30"
+        android:fontFamily="@font/baloo"
+        android:gravity="center"
+        android:text="@string/txt_tutorial_shoot"
+        android:textColor="@color/brown"
+        android:textSize="@dimen/txt_tutorial_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/image_dialog"
+        app:layout_constraintStart_toStartOf="@id/image_dialog"
+        app:layout_constraintTop_toTopOf="@id/image_dialog" />
+
+    <ImageView
+        android:id="@+id/image_tutorial"
+        android:layout_width="@dimen/image_tutorial_width"
+        android:layout_height="@dimen/image_tutorial_width"
+        android:src="@drawable/tutorial_shoot"
+        app:layout_constraintEnd_toEndOf="@id/image_dialog"
+        app:layout_constraintStart_toStartOf="@id/image_dialog"
+        app:layout_constraintTop_toBottomOf="@id/txt_tutorial" />
+
+    <ImageButton
+        android:id="@+id/btn_play"
+        android:layout_width="@dimen/btn_small_width"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_5"
+        android:background="@drawable/btn_play"
+        app:layout_constraintDimensionRatio="5:2"
+        app:layout_constraintEnd_toEndOf="@id/image_dialog"
+        app:layout_constraintStart_toStartOf="@id/image_dialog"
+        app:layout_constraintTop_toBottomOf="@id/image_tutorial" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

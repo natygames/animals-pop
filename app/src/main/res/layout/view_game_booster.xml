@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_booster"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription">
+
+    <ImageButton
+        android:id="@+id/btn_pause"
+        android:layout_width="@dimen/btn_round_width"
+        android:layout_height="@dimen/btn_round_width"
+        android:layout_margin="@dimen/margin_10"
+        android:background="@drawable/btn_setting"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_color_bubble"
+        android:layout_width="@dimen/btn_booster_width"
+        android:layout_height="@dimen/btn_booster_width"
+        android:layout_margin="@dimen/margin_10"
+        android:background="@drawable/btn_color_bubble"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_fire_bubble" />
+
+    <TextView
+        android:id="@+id/txt_color_bubble"
+        android:layout_width="@dimen/btn_booster_num_width"
+        android:layout_height="@dimen/btn_booster_num_width"
+        android:background="@drawable/item_field"
+        android:fontFamily="@font/baloo"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/txt_booster_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/btn_color_bubble"
+        app:layout_constraintEnd_toEndOf="@id/btn_color_bubble" />
+
+    <ImageButton
+        android:id="@+id/btn_fire_bubble"
+        android:layout_width="@dimen/btn_booster_width"
+        android:layout_height="@dimen/btn_booster_width"
+        android:layout_margin="@dimen/margin_10"
+        android:background="@drawable/btn_fire_bubble"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_bomb_bubble" />
+
+    <TextView
+        android:id="@+id/txt_fire_bubble"
+        android:layout_width="@dimen/btn_booster_num_width"
+        android:layout_height="@dimen/btn_booster_num_width"
+        android:background="@drawable/item_field"
+        android:fontFamily="@font/baloo"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/txt_booster_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/btn_fire_bubble"
+        app:layout_constraintEnd_toEndOf="@id/btn_fire_bubble" />
+
+    <ImageButton
+        android:id="@+id/btn_bomb_bubble"
+        android:layout_width="@dimen/btn_booster_width"
+        android:layout_height="@dimen/btn_booster_width"
+        android:layout_margin="@dimen/margin_10"
+        android:background="@drawable/btn_bomb_bubble"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_bomb_bubble"
+        android:layout_width="@dimen/btn_booster_num_width"
+        android:layout_height="@dimen/btn_booster_num_width"
+        android:background="@drawable/item_field"
+        android:fontFamily="@font/baloo"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/txt_booster_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/btn_bomb_bubble"
+        app:layout_constraintEnd_toEndOf="@id/btn_bomb_bubble" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

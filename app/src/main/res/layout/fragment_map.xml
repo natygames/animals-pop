@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    tools:context=".fragment.MapFragment"
+    tools:ignore="ContentDescription">
+
+    <include layout="@layout/view_map_level" />
+
+    <include layout="@layout/view_map_state" />
+
+    <ImageButton
+        android:id="@+id/btn_wheel"
+        android:layout_width="@dimen/btn_wheel_width"
+        android:layout_height="@dimen/btn_wheel_width"
+        android:layout_marginStart="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_20"
+        android:background="@drawable/btn_wheel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline" />
+
+    <ImageButton
+        android:id="@+id/btn_setting"
+        android:layout_width="@dimen/btn_round_width"
+        android:layout_height="@dimen/btn_round_width"
+        android:layout_margin="@dimen/margin_10"
+        android:background="@drawable/btn_setting"
+        app:layout_constraintBottom_toTopOf="@id/adView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/txt_admob_banner"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/image_state_height" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

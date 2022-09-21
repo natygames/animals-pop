@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription">
+
+    <ImageView
+        android:id="@+id/image_dialog"
+        android:layout_width="@dimen/dialog_width"
+        android:layout_height="0dp"
+        android:background="@drawable/dialog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_30"
+        android:fontFamily="@font/baloo"
+        android:gravity="center"
+        android:text="@string/txt_exit"
+        android:textColor="@color/brown"
+        android:textSize="@dimen/txt_dialog_small_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/image_dialog"
+        app:layout_constraintEnd_toEndOf="@id/image_dialog"
+        app:layout_constraintStart_toStartOf="@id/image_dialog"
+        app:layout_constraintTop_toTopOf="@id/image_dialog"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <ImageButton
+        android:id="@+id/btn_cancel"
+        android:layout_width="@dimen/btn_round_width"
+        android:layout_height="@dimen/btn_round_width"
+        android:layout_margin="@dimen/margin_10"
+        android:background="@drawable/btn_cancel"
+        app:layout_constraintEnd_toEndOf="@id/image_dialog"
+        app:layout_constraintTop_toTopOf="@id/image_dialog" />
+
+    <ImageButton
+        android:id="@+id/btn_exit"
+        android:layout_width="@dimen/btn_small_width"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@drawable/btn_exit"
+        app:layout_constraintDimensionRatio="5:2"
+        app:layout_constraintEnd_toEndOf="@id/image_dialog"
+        app:layout_constraintStart_toStartOf="@id/image_dialog"
+        app:layout_constraintTop_toBottomOf="@id/txt_exit" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

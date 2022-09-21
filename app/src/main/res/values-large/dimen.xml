@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text size -->
+    <dimen name="txt_dialog_size">45sp</dimen>
+    <dimen name="txt_dialog_small_size">39sp</dimen>
+    <dimen name="txt_dialog_score_size">52sp</dimen>
+    <dimen name="txt_state_size">22sp</dimen>
+    <dimen name="txt_booster_size">22sp</dimen>
+    <dimen name="txt_switch_size">39sp</dimen>
+    <dimen name="txt_level_size">28sp</dimen>
+    <dimen name="txt_tutorial_size">28sp</dimen>
+    <dimen name="txt_lives_size">32sp</dimen>
+    <dimen name="txt_product_name_size">20sp</dimen>
+
+    <!-- Button width -->
+    <dimen name="btn_width">208dp</dimen>
+    <dimen name="btn_small_width">156dp</dimen>
+    <dimen name="btn_round_width">65dp</dimen>
+    <dimen name="btn_level_width">65dp</dimen>
+    <dimen name="btn_wheel_width">91dp</dimen>
+    <dimen name="btn_booster_width">78dp</dimen>
+    <dimen name="btn_booster_num_width">32dp</dimen>
+    <dimen name="btn_switch_width">104dp</dimen>
+    <dimen name="btn_shop_width">130dp</dimen>
+    <dimen name="btn_start_width">130dp</dimen>
+    <dimen name="btn_price_width">117dp</dimen>
+
+    <!-- Image width -->
+    <dimen name="image_leaf_width">234dp</dimen>
+    <dimen name="image_fox_width">390dp</dimen>
+    <dimen name="image_star_width">130dp</dimen>
+    <dimen name="image_tutorial_width">260dp</dimen>
+    <dimen name="image_star_small_width">97dp</dimen>
+    <dimen name="image_level_star_width">52dp</dimen>
+    <dimen name="image_product_width">325dp</dimen>
+    <dimen name="image_booster_width">260dp</dimen>
+    <dimen name="image_logo_bg_width">390dp</dimen>
+    <dimen name="image_logo_width">455dp</dimen>
+    <dimen name="image_logo_fox_width">325dp</dimen>
+    <dimen name="image_wheel_width">390dp</dimen>
+    <dimen name="image_wheel_axis_width">91dp</dimen>
+    <dimen name="image_wheel_pointer_width">52dp</dimen>
+
+    <!-- Image height -->
+    <dimen name="image_state_height">91dp</dimen>
+    <dimen name="image_state_board_height">65dp</dimen>
+    <dimen name="image_state_progressbar_height">13dp</dimen>
+    <dimen name="image_state_star_height">19dp</dimen>
+    <dimen name="image_product_height">78dp</dimen>
+
+    <!-- Dialog width -->
+    <dimen name="dialog_width">390dp</dimen>
+
+    <!-- Margin -->
+    <dimen name="margin_5">7dp</dimen>
+    <dimen name="margin_10">14dp</dimen>
+    <dimen name="margin_20">28dp</dimen>
+    <dimen name="margin_30">42dp</dimen>
+    <dimen name="margin_overlap">-42dp</dimen>
+
+    <!-- Ratio in 1 : 1.3 : 1.8 for view -->
+    <!-- Ratio in 1 : 1.4 : 1.8 for margin -->
+</resources>

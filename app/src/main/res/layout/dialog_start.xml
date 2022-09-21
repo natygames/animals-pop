@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription">
+
+    <ImageView
+        android:id="@+id/image_leaf_01"
+        android:layout_width="@dimen/image_leaf_width"
+        android:layout_height="0dp"
+        android:src="@drawable/leaf_01"
+        app:layout_constraintBottom_toTopOf="@id/image_ribbon"
+        app:layout_constraintDimensionRatio="7:5"
+        app:layout_constraintEnd_toStartOf="@id/image_leaf_02"
+        app:layout_constraintStart_toStartOf="@id/image_ribbon"
+        app:layout_constraintTop_toTopOf="@id/image_ribbon" />
+
+    <ImageView
+        android:id="@+id/image_leaf_02"
+        android:layout_width="@dimen/image_leaf_width"
+        android:layout_height="0dp"
+        android:src="@drawable/leaf_02"
+        app:layout_constraintBottom_toTopOf="@id/image_ribbon"
+        app:layout_constraintDimensionRatio="7:5"
+        app:layout_constraintEnd_toEndOf="@id/image_ribbon"
+        app:layout_constraintStart_toEndOf="@id/image_leaf_01"
+        app:layout_constraintTop_toTopOf="@id/image_ribbon" />
+
+    <ImageView
+        android:id="@+id/image_fox_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/light_bg"
+        app:layout_constraintBottom_toTopOf="@id/image_ribbon"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/image_ribbon"
+        app:layout_constraintStart_toStartOf="@id/image_ribbon"
+        app:layout_constraintTop_toTopOf="@id/image_ribbon" />
+
+    <ImageView
+        android:id="@+id/image_fox"
+        android:layout_width="@dimen/image_fox_width"
+        android:layout_height="@dimen/image_fox_width"
+        android:src="@drawable/fox_target_pop"
+        app:layout_constraintBottom_toBottomOf="@id/image_ribbon"
+        app:layout_constraintEnd_toEndOf="@id/image_start_dialog"
+        app:layout_constraintStart_toStartOf="@id/image_start_dialog" />
+
+    <ImageView
+        android:id="@+id/image_start_dialog"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/dialog_game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_field"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_20"
+        android:background="@drawable/board_field"
+        app:layout_constraintBottom_toBottomOf="@id/image_start_dialog"
+        app:layout_constraintDimensionRatio="4:1"
+        app:layout_constraintEnd_toEndOf="@id/image_ribbon"
+        app:layout_constraintStart_toStartOf="@id/image_ribbon"
+        app:layout_constraintTop_toTopOf="@id/image_start_dialog" />
+
+    <ImageView
+        android:id="@+id/image_start_target"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/target_pop"
+        app:layout_constraintBottom_toBottomOf="@+id/image_field"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/image_field"
+        app:layout_constraintHorizontal_bias="0.35"
+        app:layout_constraintStart_toStartOf="@id/image_field"
+        app:layout_constraintTop_toTopOf="@+id/image_field" />
+
+    <TextView
+        android:id="@+id/txt_start_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_10"
+        android:fontFamily="@font/baloo"
+        android:textColor="@color/brown"
+        android:textSize="@dimen/txt_dialog_small_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/image_field"
+        app:layout_constraintStart_toEndOf="@id/image_start_target"
+        app:layout_constraintTop_toTopOf="@+id/image_field" />
+
+    <ImageView
+        android:id="@+id/image_ribbon"
+        android:layout_width="@dimen/dialog_width"
+        android:layout_height="0dp"
+        android:src="@drawable/ribbon"
+        app:layout_constraintBottom_toBottomOf="@id/guideline"
+        app:layout_constraintDimensionRatio="3:1"
+        app:layout_constraintEnd_toEndOf="@id/image_start_dialog"
+        app:layout_constraintStart_toStartOf="@id/image_start_dialog" />
+
+    <TextView
+        android:id="@+id/txt_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        android:fontFamily="@font/baloo"
+        android:gravity="center"
+        android:text="@string/txt_level_type_pop"
+        android:textColor="@color/white"
+        android:textSize="@dimen/txt_dialog_small_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/image_ribbon"
+        app:layout_constraintStart_toStartOf="@id/image_ribbon"
+        app:layout_constraintTop_toTopOf="@id/image_ribbon" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

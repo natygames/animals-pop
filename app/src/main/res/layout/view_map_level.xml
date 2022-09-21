@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_map"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/image_state_height"
+    tools:ignore="ContentDescription">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_map_01"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/map_01"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="7:8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/image_map_02"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/map_02"
+            app:layout_constraintBottom_toTopOf="@id/image_map_01"
+            app:layout_constraintDimensionRatio="7:8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/image_map_03"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/map_03"
+            app:layout_constraintBottom_toTopOf="@id/image_map_02"
+            app:layout_constraintDimensionRatio="7:8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_level_previous"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_dialog_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_01"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_01"
+            app:layout_constraintVertical_bias="0.85" />
+
+        <TextView
+            android:id="@+id/btn_level_1"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_01"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.33"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_01"
+            app:layout_constraintVertical_bias="0.67" />
+
+        <ImageView
+            android:id="@+id/image_level_star_1"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_1"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_1"
+            app:layout_constraintStart_toStartOf="@id/btn_level_1"
+            app:layout_constraintTop_toTopOf="@id/btn_level_1" />
+
+        <TextView
+            android:id="@+id/btn_level_2"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="2"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_01"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.37"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_01"
+            app:layout_constraintVertical_bias="0.45" />
+
+        <ImageView
+            android:id="@+id/image_level_star_2"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_2"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_2"
+            app:layout_constraintStart_toStartOf="@id/btn_level_2"
+            app:layout_constraintTop_toTopOf="@id/btn_level_2" />
+
+        <TextView
+            android:id="@+id/btn_level_3"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="3"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_01"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.58"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_01"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <ImageView
+            android:id="@+id/image_level_star_3"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_3"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_3"
+            app:layout_constraintStart_toStartOf="@id/btn_level_3"
+            app:layout_constraintTop_toTopOf="@id/btn_level_3" />
+
+        <TextView
+            android:id="@+id/btn_level_4"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="4"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_01"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_01"
+            app:layout_constraintVertical_bias="0.12" />
+
+        <ImageView
+            android:id="@+id/image_level_star_4"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_4"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_4"
+            app:layout_constraintStart_toStartOf="@id/btn_level_4"
+            app:layout_constraintTop_toTopOf="@id/btn_level_4" />
+
+        <TextView
+            android:id="@+id/btn_level_5"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="5"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_01"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.56"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_02" />
+
+        <ImageView
+            android:id="@+id/image_level_star_5"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_5"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_5"
+            app:layout_constraintStart_toStartOf="@id/btn_level_5"
+            app:layout_constraintTop_toTopOf="@id/btn_level_5" />
+
+        <TextView
+            android:id="@+id/btn_level_6"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="6"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_02"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.64"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_02"
+            app:layout_constraintVertical_bias="0.88" />
+
+        <ImageView
+            android:id="@+id/image_level_star_6"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_6"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_6"
+            app:layout_constraintStart_toStartOf="@id/btn_level_6"
+            app:layout_constraintTop_toTopOf="@id/btn_level_6" />
+
+        <TextView
+            android:id="@+id/btn_level_7"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="7"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_02"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.81"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_02"
+            app:layout_constraintVertical_bias="0.72" />
+
+        <ImageView
+            android:id="@+id/image_level_star_7"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_7"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_7"
+            app:layout_constraintStart_toStartOf="@id/btn_level_7"
+            app:layout_constraintTop_toTopOf="@id/btn_level_7" />
+
+        <TextView
+            android:id="@+id/btn_level_8"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="8"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_02"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_02"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <ImageView
+            android:id="@+id/image_level_star_8"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_8"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_8"
+            app:layout_constraintStart_toStartOf="@id/btn_level_8"
+            app:layout_constraintTop_toTopOf="@id/btn_level_8" />
+
+        <TextView
+            android:id="@+id/btn_level_9"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="9"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_02"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_02"
+            app:layout_constraintVertical_bias="0.33" />
+
+        <ImageView
+            android:id="@+id/image_level_star_9"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_9"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_9"
+            app:layout_constraintStart_toStartOf="@id/btn_level_9"
+            app:layout_constraintTop_toTopOf="@id/btn_level_9" />
+
+        <TextView
+            android:id="@+id/btn_level_10"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="10"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_02"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.47"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_02"
+            app:layout_constraintVertical_bias="0.13" />
+
+        <ImageView
+            android:id="@+id/image_level_star_10"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_10"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_10"
+            app:layout_constraintStart_toStartOf="@id/btn_level_10"
+            app:layout_constraintTop_toTopOf="@id/btn_level_10" />
+
+        <TextView
+            android:id="@+id/btn_level_11"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="11"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_02"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.58"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_03" />
+
+        <ImageView
+            android:id="@+id/image_level_star_11"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_11"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_11"
+            app:layout_constraintStart_toStartOf="@id/btn_level_11"
+            app:layout_constraintTop_toTopOf="@id/btn_level_11" />
+
+        <TextView
+            android:id="@+id/btn_level_12"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="12"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_03"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_03"
+            app:layout_constraintVertical_bias="0.86" />
+
+        <ImageView
+            android:id="@+id/image_level_star_12"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_12"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_12"
+            app:layout_constraintStart_toStartOf="@id/btn_level_12"
+            app:layout_constraintTop_toTopOf="@id/btn_level_12" />
+
+        <TextView
+            android:id="@+id/btn_level_13"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="13"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_03"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.33"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_03"
+            app:layout_constraintVertical_bias="0.68" />
+
+        <ImageView
+            android:id="@+id/image_level_star_13"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_13"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_13"
+            app:layout_constraintStart_toStartOf="@id/btn_level_13"
+            app:layout_constraintTop_toTopOf="@id/btn_level_13" />
+
+        <TextView
+            android:id="@+id/btn_level_14"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="14"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_03"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.35"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_03"
+            app:layout_constraintVertical_bias="0.48" />
+
+        <ImageView
+            android:id="@+id/image_level_star_14"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_14"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_14"
+            app:layout_constraintStart_toStartOf="@id/btn_level_14"
+            app:layout_constraintTop_toTopOf="@id/btn_level_14" />
+
+        <TextView
+            android:id="@+id/btn_level_15"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:text="15"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_level_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_03"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.54"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_03"
+            app:layout_constraintVertical_bias="0.33" />
+
+        <ImageView
+            android:id="@+id/image_level_star_15"
+            android:layout_width="@dimen/image_level_star_width"
+            android:layout_height="0dp"
+            android:src="@drawable/star_set_bg"
+            app:layout_constraintBottom_toTopOf="@+id/btn_level_15"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="@id/btn_level_15"
+            app:layout_constraintStart_toStartOf="@id/btn_level_15"
+            app:layout_constraintTop_toTopOf="@id/btn_level_15" />
+
+        <TextView
+            android:id="@+id/btn_level_next"
+            android:layout_width="@dimen/btn_level_width"
+            android:layout_height="@dimen/btn_level_width"
+            android:background="@drawable/btn_level"
+            android:fontFamily="@font/baloo"
+            android:gravity="center"
+            android:textColor="@color/brown"
+            android:textSize="@dimen/txt_dialog_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_map_03"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.68"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_map_03"
+            app:layout_constraintVertical_bias="0.15" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

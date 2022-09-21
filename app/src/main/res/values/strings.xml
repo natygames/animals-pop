@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Animals Pop</string>
+    <string name="app_version">1.0</string>
+
+    <string name="txt_level">Level %1$d</string>
+    <string name="txt_loss">You loss !</string>
+    <string name="txt_out_of_move">Run out of moves !</string>
+    <string name="txt_score">Score :</string>
+    <string name="txt_setting">Setting</string>
+    <string name="txt_hint">Hint:</string>
+    <string name="txt_lives_full">Full</string>
+    <string name="txt_shop">Shop</string>
+    <string name="txt_coins">More Coins</string>
+    <string name="txt_color_ball">Color Ball</string>
+    <string name="txt_fireball">Fireball</string>
+    <string name="txt_bomb">Bomb</string>
+    <string name="txt_confirm">Buy this item ?</string>
+    <string name="txt_booster">New Booster</string>
+    <string name="txt_exit">Exit game ?</string>
+    <string name="txt_error">Connect Error\n Try Again ?</string>
+    <string name="txt_bonus">Daily Bonus</string>
+    <string name="txt_ad_extra_moves">Watch Ad for\n5 extra moves ?</string>
+    <string name="txt_ad_more_coins">Watch Ad for\n more coins ?</string>
+    <string name="txt_ad_move_lives">Watch Ad for\n more lives ?</string>
+
+    <!-- Level type -->
+    <string name="txt_level_type_pop">Pop bubbles</string>
+    <string name="txt_level_type_collect">Collect items</string>
+
+    <!-- Text of tutorial -->
+    <string name="txt_tutorial_shoot">Drag and shoot at\nsame color bubbles !</string>
+    <string name="txt_tutorial_bounce">Bounce off walls to\npop higher bubbles !</string>
+    <string name="txt_tutorial_switch">Tap here to switch\n next bubble !</string>
+    <string name="txt_tutorial_collect_item">Pop the bubble around\nitems to collect them !</string>
+    <string name="txt_tutorial_color_ball">The color ball can\nmatch with any color !</string>
+    <string name="txt_tutorial_fireball">The fireball burns\neverything in its way !</string>
+    <string name="txt_tutorial_bomb">The bomb explodes\n nearby bubble !</string>
+    <string name="txt_tutorial_locked_bubble">Break the ice by popping\n nearby bubbles !</string>
+    <string name="txt_tutorial_obstacle_bubble">Smash the wood by\nhitting it with a bubble !</string>
+
+    <!-- Text of Ad code -->
+    <string name="txt_admob_banner">ca-app-pub-8290330430049037/6731713396</string>
+    <string name="txt_admob_reward">ca-app-pub-8290330430049037/6156998320</string>
+</resources>
