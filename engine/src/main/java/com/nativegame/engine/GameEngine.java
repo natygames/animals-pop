@@ -2,6 +2,7 @@ package com.nativegame.engine;
 
 import android.content.Context;
 
+import com.nativegame.engine.collision.QuadTree;
 import com.nativegame.engine.input.InputController;
 import com.nativegame.engine.level.Level;
 import com.nativegame.engine.sound.SoundManager;
@@ -16,9 +17,9 @@ public class GameEngine {
 
     private final ArrayList<ArrayList<GameObject>> mLayers = new ArrayList<>();
     private final ArrayList<GameObject> mGameObjects = new ArrayList<>();
-    private final ArrayList<Sprite> mCollisionObjects = new ArrayList<>();
     private final ArrayList<GameObject> mObjectsToAdd = new ArrayList<>();
     private final ArrayList<GameObject> mObjectsToRemove = new ArrayList<>();
+    private final QuadTree mQuadTree = new QuadTree();
 
     public final GameActivity mActivity;
     private final GameView mGameView;
@@ -37,10 +38,12 @@ public class GameEngine {
         mActivity = activity;
         mGameView = gameView;
         mGameView.setGameObjects(mLayers);
-
+        // Init the configure
         mScreenWidth = gameView.getWidth() - gameView.getPaddingRight() - gameView.getPaddingLeft();
         mScreenHeight = gameView.getHeight() - gameView.getPaddingTop() - gameView.getPaddingBottom();
         mPixelFactor = mScreenWidth / 3000f;   // Default value
+        // Init the collision area of quadtree
+        mQuadTree.init(this);
     }
 
     public void setPixelFactor(float basePixel) {
@@ -138,12 +141,15 @@ public class GameEngine {
             mGameObjects.get(i).onUpdate(elapsedMillis, this);
             mGameObjects.get(i).onPostUpdate();
         }
-        checkCollisions();
+        checkCollision();
         synchronized (mLayers) {
             while (!mObjectsToRemove.isEmpty()) {
                 GameObject objectToRemove = mObjectsToRemove.remove(0);
                 if (mGameObjects.remove(objectToRemove)) {
                     mLayers.get(objectToRemove.mLayer).remove(objectToRemove);
+                    if (objectToRemove instanceof Sprite) {
+                        mQuadTree.removeCollisionObject((Sprite) objectToRemove);
+                    }
                     objectToRemove.onRemovedFromGameEngine();
                 }
             }
@@ -158,18 +164,8 @@ public class GameEngine {
         mGameView.draw();
     }
 
-    private void checkCollisions() {
-        int numObjects = mCollisionObjects.size();
-        for (int i = 0; i < numObjects; i++) {
-            Sprite spriteA = mCollisionObjects.get(i);
-            for (int j = i + 1; j < numObjects; j++) {
-                Sprite spriteB = mCollisionObjects.get(j);
-                if (spriteA.checkCollision(spriteB)) {
-                    spriteA.onCollision(this, spriteB);
-                    spriteB.onCollision(this, spriteA);
-                }
-            }
-        }
+    private void checkCollision() {
+        mQuadTree.checkCollision(this);
     }
 
     private void addToLayerNow(GameObject object) {
@@ -186,7 +182,7 @@ public class GameEngine {
         if (object instanceof Sprite) {
             Sprite sprite = (Sprite) object;
             if (sprite.mBodyType != BodyType.None) {
-                mCollisionObjects.add(sprite);
+                mQuadTree.addCollisionObject(sprite);
             }
         }
         object.onAddedToGameEngine();

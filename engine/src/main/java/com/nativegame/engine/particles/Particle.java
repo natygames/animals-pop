@@ -40,7 +40,7 @@ public class Particle extends Sprite {
 
     @Override
     public void onRemovedFromGameEngine() {
-        mParent.backToPool(this);
+        mParent.returnToPool(this);
     }
 
     @Override

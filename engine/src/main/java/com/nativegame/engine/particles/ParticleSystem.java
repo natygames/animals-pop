@@ -267,7 +267,7 @@ public class ParticleSystem extends GameObject {
         // The particles draw by themself
     }
 
-    public void backToPool(Particle particle) {
+    public void returnToPool(Particle particle) {
         mParticlePool.add(particle);
     }
 
