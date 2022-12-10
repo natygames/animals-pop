@@ -4,107 +4,147 @@ import com.nativegame.animalspop.R;
 import com.nativegame.animalspop.game.MyGameEvent;
 import com.nativegame.animalspop.game.bubble.Bubble;
 import com.nativegame.animalspop.game.bubble.BubbleColor;
-import com.nativegame.animalspop.game.bubble.effect.BubblePopEffect;
-import com.nativegame.animalspop.game.bubble.effect.ItemEffect;
+import com.nativegame.animalspop.game.effect.BubblePopEffect;
+import com.nativegame.animalspop.game.effect.ItemEffect;
 import com.nativegame.animalspop.sound.MySoundEvent;
-import com.nativegame.engine.GameEngine;
+import com.nativegame.nattyengine.Game;
+import com.nativegame.nattyengine.collision.shape.CircleCollisionShape;
+import com.nativegame.nattyengine.entity.sprite.CollidableSprite;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Oscar Liang on 2022/09/18
  */
 
-public class LargeItemBubble extends Bubble {
+public class LargeItemBubble extends CompositeBubble {
 
-    private static final float ITEM_SCALE = 3;
     private static final int ITEMS_PER_BUBBLE = 5;
-    private static final long TIME_BETWEEN_ITEMS = 150;
 
     private final BubblePopEffect mBubblePopEffect;
-    private final ArrayList<ItemEffect> mItemEffectsPool = new ArrayList<>(ITEMS_PER_BUBBLE);
+    private final List<ItemEffect> mItemEffectsPool = new ArrayList<>(ITEMS_PER_BUBBLE);
 
+    private long mTotalTime;
     private boolean mIsItem = true;
-
-    private long mTotalMillis;
     private boolean mCollected = false;
 
-    public LargeItemBubble(GameEngine gameEngine, int row, int col) {
-        super(gameEngine, row, col, BubbleColor.LARGE_ITEM);
+    public LargeItemBubble(Game game) {
+        super(game, BubbleColor.LARGE_ITEM);
+        mBubblePopEffect = new BubblePopEffect(game);
         // We add item to the pool now
-        mBubblePopEffect = new BubblePopEffect(gameEngine);
         for (int i = 0; i < ITEMS_PER_BUBBLE; i++) {
-            mItemEffectsPool.add(new ItemEffect(gameEngine, R.drawable.nut));
+            mItemEffectsPool.add(new ItemEffect(game, R.drawable.nut));
+        }
+        mLayer++;   // We want the item float on top of bubbles
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mX -= mWidth / 3f;
+        mY -= mHeight / 3f;
+        mBubblePopEffect.mScale = 3;
+        // Init the DummyBubble
+        for (Bubble b : mEdges) {
+            addDummyBubble((DummyBubble) b);
         }
     }
 
     @Override
-    public void startGame(GameEngine gameEngine) {
-        super.startGame(gameEngine);
-        mScale = ITEM_SCALE;
-        mBubblePopEffect.mScale = ITEM_SCALE;
-    }
-
-    @Override
-    public void addToGameEngine(GameEngine gameEngine, int layer) {
-        super.addToGameEngine(gameEngine, layer + 1);
-    }
-
-    @Override
-    public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
-        super.onUpdate(elapsedMillis, gameEngine);
+    public void onUpdate(long elapsedMillis) {
+        super.onUpdate(elapsedMillis);
         if (mCollected) {
-            mTotalMillis += elapsedMillis;
-            if (mTotalMillis >= TIME_BETWEEN_ITEMS) {
+            mTotalTime += elapsedMillis;
+            if (mTotalTime >= 150) {
                 if (!mItemEffectsPool.isEmpty()) {
-                    activateItemEffect(gameEngine);
+                    activateItemEffect();
                 } else {
                     mCollected = false;
                 }
-                mTotalMillis = 0;
+                mTotalTime = 0;
             }
         }
     }
 
     @Override
-    public void popBubble(GameEngine gameEngine) {
+    public void popBubble() {
         if (mIsItem) {
-            // We pop this item if it hasn't been collected
-            popLargeItem(gameEngine);
+            // We pop the item if it hasn't been collected
+            popLargeItem();
         } else {
             // Otherwise, we pop the bubble
-            super.popBubble(gameEngine);
+            super.popBubble();
         }
     }
 
     @Override
-    public void popFloater(GameEngine gameEngine) {
+    public void popFloater() {
         if (mIsItem) {
-            // We pop this item if it hasn't been collected
-            popLargeItem(gameEngine);
+            // We pop the item if it hasn't been collected
+            popLargeItem();
         } else {
             // Otherwise, we pop the floater
-            super.popFloater(gameEngine);
+            super.popFloater();
         }
     }
 
-    private void popLargeItem(GameEngine gameEngine) {
-        mBubblePopEffect.activate(gameEngine, mX + mWidth / 2f, mY + mHeight / 2f, 4);
-        activateItemEffect(gameEngine);
+    private void popLargeItem() {
+        mBubblePopEffect.activate(mX + mWidth / 2f, mY + mHeight / 2f);
+        activateItemEffect();
         setBubbleColor(BubbleColor.BLANK);
+        setCollisionShape(new CircleCollisionShape(mWidth, mHeight));   // Update collision box
+        clearDummyBubble();
         // We notify the target counter now, so it will sync
         for (int i = 0; i < ITEMS_PER_BUBBLE; i++) {
-            gameEngine.onGameEvent(MyGameEvent.COLLECT_ITEM);   // We have 5 items
+            gameEvent(MyGameEvent.COLLECT_ITEM);   // We have 5 items
         }
-        gameEngine.mSoundManager.playSound(MySoundEvent.COLLECT_ITEM);
+        mGame.getSoundManager().playSound(MySoundEvent.COLLECT_ITEM);
+        mX += mWidth;
+        mY += mHeight;
+        mLayer--;
         mCollected = true;
-        mScale = 1;
         mIsItem = false;
     }
 
-    private void activateItemEffect(GameEngine gameEngine) {
+    private void activateItemEffect() {
         mItemEffectsPool.remove(0)
-                .activate(gameEngine, mX + mWidth / 2f, mY + mHeight / 2f, 4);
+                .activate(mX + mWidth / 2f, mY + mHeight / 2f);
+    }
+
+    @Override
+    public Bubble getCollidedBubble(CollidableSprite collidableSprite) {
+        if (mIsItem) {
+            // Check player collide bubble at bottom, side or middle
+            if (collidableSprite.mY > mY + mHeight * 3 / 4f) {
+                // Check player collide bubble at right or left bottom
+                if (collidableSprite.mX > mX + mWidth * 2 / 3f) {
+                    return mEdges[5].mEdges[5];
+                } else if (collidableSprite.mX > mX + mWidth / 3f) {
+                    return mEdges[5].mEdges[4];
+                } else {
+                    return mEdges[4].mEdges[4];
+                }
+                // [==|=====|==]
+                //  0.33   0.66
+            } else if (collidableSprite.mY > mY + mHeight / 2f) {
+                // Check player collide bubble at right or left middle
+                if (collidableSprite.mX > mX + mWidth / 2f) {
+                    return mEdges[3].mEdges[5];
+                } else {
+                    return mEdges[2].mEdges[4];
+                }
+            } else {
+                // Check player collide bubble at right or left side
+                if (collidableSprite.mX > mX + mWidth / 2f) {
+                    return mEdges[3].mEdges[3];
+                } else {
+                    return mEdges[2].mEdges[2];
+                }
+            }
+        } else {
+            return super.getCollidedBubble(collidableSprite);
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import com.nativegame.animalspop.R;
  */
 
 public enum LevelTutorial {
+
     SHOOT_BUBBLE,
     BOUNCE_BUBBLE,
     SWITCH_BUBBLE,
@@ -17,7 +18,7 @@ public enum LevelTutorial {
     LOCKED_BUBBLE,
     OBSTACLE_BUBBLE;
 
-    public int getStringResId() {
+    public int getStringId() {
         switch (this) {
             case SHOOT_BUBBLE:
                 return R.string.txt_tutorial_shoot;
@@ -38,10 +39,11 @@ public enum LevelTutorial {
             case OBSTACLE_BUBBLE:
                 return R.string.txt_tutorial_obstacle_bubble;
         }
+
         return 0;
     }
 
-    public int getImageResId() {
+    public int getDrawableId() {
         switch (this) {
             case SHOOT_BUBBLE:
                 return R.drawable.tutorial_shoot;
@@ -62,6 +64,7 @@ public enum LevelTutorial {
             case OBSTACLE_BUBBLE:
                 return R.drawable.tutorial_obstacle_bubble;
         }
+
         return 0;
     }
 

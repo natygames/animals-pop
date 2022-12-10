@@ -3,9 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout-large/fragment_game.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout-sw600dp/fragment_game.xml" value="0.1022167487684729" />
         <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout/activity_main.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout/fragment_map.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout/dialog_level.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout/dialog_new_booster.xml" value="0.1503623188405797" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout/dialog_wheel.xml" value="0.1503623188405797" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout/fragment_game.xml" value="0.1503623188405797" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout/fragment_map.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout/view_game_booster.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout/view_game_input.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/layout/view_recycler_product.xml" value="0.536" />
         <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.173" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/AnimalsPop/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.189" />
       </map>
     </option>
   </component>

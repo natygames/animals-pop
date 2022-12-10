@@ -1,7 +1,7 @@
 package com.nativegame.animalspop.game.bubble;
 
-import com.nativegame.animalspop.MainActivity;
 import com.nativegame.animalspop.R;
+import com.nativegame.nattyengine.Game;
 
 /**
  * Created by Oscar Liang on 2022/09/18
@@ -20,7 +20,7 @@ public enum BubbleColor {
     LARGE_OBSTACLE,
     DUMMY;
 
-    public int getImageResId() {
+    public int getDrawableId() {
         switch (this) {
             case BLUE:
                 return R.drawable.bubble_blue;
@@ -31,7 +31,7 @@ public enum BubbleColor {
             case GREEN:
                 return R.drawable.bubble_green;
             case BLANK:
-                return MainActivity.DEBUG_MODE ? R.drawable.bubble_blank_debug : R.drawable.bubble_blank;
+                return Game.getDebugMode() ? R.drawable.bubble_blank_debug : R.drawable.bubble_blank;
             case LOCKED:
                 return R.drawable.bubble_ice;
             case ITEM:
@@ -48,7 +48,7 @@ public enum BubbleColor {
         return 0;
     }
 
-    public int getDotResId() {
+    public int getDotDrawableId() {
         switch (this) {
             case BLUE:
                 return R.drawable.dot_blue;
@@ -62,7 +62,7 @@ public enum BubbleColor {
         return R.drawable.dot_blue;   // Default color
     }
 
-    public int getScoreResId() {
+    public int getScoreDrawableId() {
         switch (this) {
             case BLUE:
                 return R.drawable.score_blue;
@@ -76,7 +76,7 @@ public enum BubbleColor {
         return R.drawable.score_blue;   // Default color
     }
 
-    public int getBonusScoreResId() {
+    public int getBonusScoreDrawableId() {
         switch (this) {
             case BLUE:
                 return R.drawable.bonus_score_blue;
@@ -90,7 +90,7 @@ public enum BubbleColor {
         return R.drawable.bonus_score_blue;   // Default color
     }
 
-    public int getFirework() {
+    public int getFireworkDrawableId() {
         switch (this) {
             case BLUE:
                 return R.drawable.sparkle_blue;

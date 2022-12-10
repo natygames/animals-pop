@@ -1,141 +1,142 @@
 package com.nativegame.animalspop.game.player.booster;
 
 import com.nativegame.animalspop.R;
-import com.nativegame.animalspop.game.MyGameEvent;
+import com.nativegame.animalspop.game.Layer;
 import com.nativegame.animalspop.game.bubble.Bubble;
 import com.nativegame.animalspop.game.bubble.BubbleColor;
 import com.nativegame.animalspop.game.bubble.BubbleSystem;
 import com.nativegame.animalspop.game.player.dot.DotSystem;
-import com.nativegame.animalspop.game.player.PlayerBubble;
 import com.nativegame.animalspop.sound.MySoundEvent;
-import com.nativegame.engine.GameEngine;
-import com.nativegame.engine.particles.ParticleSystem;
+import com.nativegame.nattyengine.Game;
+import com.nativegame.nattyengine.entity.particles.ParticleSystem;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
  * Created by Oscar Liang on 2022/09/18
  */
 
-public class ColorBubble extends PlayerBubble {
+public class ColorBubble extends BoosterBubble {
+
+    private static final int EXPLOSION_PARTICLES = 30;
 
     private final ParticleSystem mTrailParticleSystem;
     private final ParticleSystem mSparkleParticleSystem;
-    private boolean mConsume;
+    private final ParticleSystem mExplosionParticleSystem;
 
-    public ColorBubble(BubbleSystem bubbleSystem, GameEngine gameEngine) {
-        super(bubbleSystem, gameEngine, R.drawable.color_bubble);
-        mTrailParticleSystem = new ParticleSystem(gameEngine, R.drawable.sparkle, 50)
-                .setDuration(300)
+    public ColorBubble(BubbleSystem bubbleSystem, Game game) {
+        super(bubbleSystem, game, R.drawable.color_bubble);
+        mTrailParticleSystem = new ParticleSystem(game, R.drawable.sparkle, 50)
+                .setDurationPerParticle(300)
                 .setEmissionRate(ParticleSystem.RATE_HIGH)
                 .setAccelerationX(-2, 2)
                 .setInitialRotation(0, 360)
                 .setRotationSpeed(-720, 720)
                 .setAlpha(255, 0)
-                .setScale(2, 4);
-        mSparkleParticleSystem = new ParticleSystem(gameEngine, R.drawable.white_particle, 10)
-                .setDuration(400)
+                .setScale(2, 4)
+                .setLayer(mLayer - 1);
+        mSparkleParticleSystem = new ParticleSystem(game, R.drawable.white_particle, 10)
+                .setDurationPerParticle(400)
                 .setSpeedX(-1000, 1000)
                 .setSpeedY(-1000, 1000)
                 .setInitialRotation(0, 360)
                 .setRotationSpeed(-720, 720)
                 .setAlpha(255, 0)
-                .setScale(1, 0.5f);
+                .setScale(1, 0.5f)
+                .setLayer(mLayer - 1);
+        mExplosionParticleSystem = new ParticleSystem(game, R.drawable.white_particle, EXPLOSION_PARTICLES)
+                .setDurationPerParticle(600)
+                .setSpeedAngle(-2500, 2500)
+                .setAccelerationY(1)
+                .setInitialRotation(0, 360)
+                .setRotationSpeed(-720, 720)
+                .setAlpha(255, 0, 200)
+                .setScale(1, 0, 200)
+                .setLayer(Layer.EFFECT_LAYER);
+
         // Init dot color
         mDotSystem.setDotBitmap(R.drawable.dot_white);
     }
 
-    public void init(GameEngine gameEngine) {
-        mX = mStartX - mWidth / 2f;
-        mY = mStartY - mHeight / 2f;
-        mConsume = false;
-        addToGameEngine(gameEngine, 2);
+    @Override
+    protected DotSystem getDotSystem() {
+        return new DotSystem(this, mGame);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mTrailParticleSystem.addToGame();
+        mSparkleParticleSystem.addToGame();
         mSparkleParticleSystem.emit();   // Start emitting
     }
 
     @Override
-    protected DotSystem getDotSystem(GameEngine gameEngine) {
-        return new DotSystem(this, gameEngine);
+    public void onRemove() {
+        super.onRemove();
+        mTrailParticleSystem.removeFromGame();
+        mSparkleParticleSystem.removeFromGame();
     }
 
     @Override
-    public void startGame(GameEngine gameEngine) {
-    }
-
-    @Override
-    public void addToGameEngine(GameEngine gameEngine, int layer) {
-        super.addToGameEngine(gameEngine, layer);
-        mTrailParticleSystem.addToGameEngine(gameEngine, layer - 1);
-        mSparkleParticleSystem.addToGameEngine(gameEngine, layer - 1);
-        gameEngine.onGameEvent(MyGameEvent.BOOSTER_ADDED);
-        gameEngine.mSoundManager.playSound(MySoundEvent.ADD_BOOSTER);
-    }
-
-    @Override
-    public void removeFromGameEngine(GameEngine gameEngine) {
-        super.removeFromGameEngine(gameEngine);
-        mTrailParticleSystem.removeFromGameEngine(gameEngine);
-        mSparkleParticleSystem.removeFromGameEngine(gameEngine);
-        if (mConsume) {
-            // Update player state and notify the booster manager
-            gameEngine.onGameEvent(MyGameEvent.BOOSTER_CONSUMED);
-        } else {
-            // Update player state
-            gameEngine.onGameEvent(MyGameEvent.BOOSTER_REMOVED);
-        }
-    }
-
-    @Override
-    public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
-        super.onUpdate(elapsedMillis, gameEngine);
+    public void onUpdate(long elapsedMillis) {
+        super.onUpdate(elapsedMillis);
         mTrailParticleSystem.setEmissionPosition(mX + mWidth / 2f, mY + mHeight / 2f);
         mSparkleParticleSystem.setEmissionPosition(mX + mWidth / 2f, mY + mHeight / 2f);
     }
 
     @Override
-    protected void onBubbleShoot(GameEngine gameEngine) {
+    protected void onBubbleShoot() {
+        super.onBubbleShoot();
         mTrailParticleSystem.emit();   // Start emitting
-        gameEngine.onGameEvent(MyGameEvent.BOOSTER_SHOT);
-        gameEngine.mSoundManager.playSound(MySoundEvent.BUBBLE_SHOOT);
     }
 
     @Override
-    protected void onBubbleSwitch(GameEngine gameEngine) {
-        // We do not switch booster here
-    }
-
-    @Override
-    protected void onBubbleHit(GameEngine gameEngine, Bubble bubble) {
-        if (bubble.mBubbleColor != BubbleColor.BLANK
-                && mY >= bubble.mY
+    protected void onBubbleHit(Bubble bubble) {
+        if (mY >= bubble.mY
                 && !mConsume) {
             // Get the new added bubble
-            Bubble newBubble = mBubbleSystem.getBubble(this, bubble);
-            // Pop all the bubble in edges
+            Bubble newBubble = mBubbleSystem.getCollidedBubble(this, bubble);
+            // Pop all the colored bubble in edges
             for (Bubble b : newBubble.mEdges) {
-                if (b.mBubbleColor != BubbleColor.BLANK) {
-                    bfs(gameEngine, b, b.mBubbleColor);
+                if (b != null && isColoredBubble(b)) {
+                    bfs(b, b.mBubbleColor);
                 }
             }
-            gameEngine.mSoundManager.playSound(MySoundEvent.BUBBLE_HIT);
-            reset(gameEngine);
+            // Check is any obstacle or locked bubble
+            newBubble.checkLockedBubble();
+            newBubble.checkObstacleBubble();
+            // Play explosion effect and sound
+            mExplosionParticleSystem.oneShot(mX + mWidth / 2f, mY + mHeight / 2f, EXPLOSION_PARTICLES);
+            mGame.getSoundManager().playSound(MySoundEvent.BOMB_EXPLODE);
+            reset();
         }
     }
 
-    private void bfs(GameEngine gameEngine, Bubble root, BubbleColor color) {
-        ArrayList<Bubble> deleteList = new ArrayList<>();
+    public boolean isColoredBubble(Bubble bubble) {
+        return bubble.mBubbleColor == BubbleColor.BLUE
+                || bubble.mBubbleColor == BubbleColor.RED
+                || bubble.mBubbleColor == BubbleColor.YELLOW
+                || bubble.mBubbleColor == BubbleColor.GREEN;
+    }
+
+    private void bfs(Bubble root, BubbleColor color) {
+        List<Bubble> removedList = new ArrayList<>();
         Queue<Bubble> queue = new LinkedList<>();
         root.mDepth = 0;
         queue.offer(root);
 
         while (!queue.isEmpty()) {
             Bubble currentBubble = queue.poll();
-            deleteList.add(currentBubble);
+            removedList.add(currentBubble);
             for (Bubble b : currentBubble.mEdges) {
                 // Unvisited bubble
-                if (b.mDepth == -1 && b.mBubbleColor == color) {
+                if (b != null
+                        && b.mDepth == -1
+                        && b.mBubbleColor == color) {
                     b.mDepth = currentBubble.mDepth + 1;
                     queue.offer(b);
                 }
@@ -143,22 +144,18 @@ public class ColorBubble extends PlayerBubble {
         }
 
         // Update bubble after bfs
-        for (Bubble b : deleteList) {
-            b.popBubble(gameEngine);
+        for (Bubble b : removedList) {
+            b.popBubble();
         }
-        deleteList.clear();
+        removedList.clear();
     }
 
     @Override
-    protected void onBubbleReset(GameEngine gameEngine) {
-        // Pop floater and shift
-        mBubbleSystem.popFloater();
-        mBubbleSystem.shiftBubble();
+    protected void onBubbleReset() {
+        super.onBubbleReset();
         // Stop emitting
         mTrailParticleSystem.stopEmit();
         mSparkleParticleSystem.stopEmit();
-        mConsume = true;
-        removeFromGameEngine(gameEngine);
     }
 
 }

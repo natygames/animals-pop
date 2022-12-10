@@ -1,6 +1,6 @@
 package com.nativegame.animalspop.level;
 
-import com.nativegame.engine.level.Level;
+import com.nativegame.nattyengine.level.Level;
 
 /**
  * Created by Oscar Liang on 2022/09/18

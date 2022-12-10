@@ -8,6 +8,7 @@
     tools:ignore="ContentDescription">
 
     <TextView
+        android:id="@+id/txt_new_booster"
         android:layout_width="@dimen/dialog_width"
         android:layout_height="0dp"
         android:background="@drawable/ribbon"

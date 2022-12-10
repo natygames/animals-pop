@@ -6,11 +6,11 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.nativegame.animalspop.database.DatabaseHelper;
-import com.nativegame.animalspop.fragment.MenuFragment;
+import com.nativegame.animalspop.ui.fragment.MenuFragment;
 import com.nativegame.animalspop.level.MyLevelManager;
 import com.nativegame.animalspop.sound.MySoundManager;
 import com.nativegame.animalspop.timer.LivesTimer;
-import com.nativegame.engine.ui.GameActivity;
+import com.nativegame.nattyengine.ui.GameActivity;
 
 /**
  * Created by Oscar Liang on 2022/09/18
@@ -42,8 +42,6 @@ import com.nativegame.engine.ui.GameActivity;
 
 public class MainActivity extends GameActivity {
 
-    public static final boolean DEBUG_MODE = false;
-
     private DatabaseHelper mDatabaseHelper;
     private AdManager mAdManager;
     private LivesTimer mLivesTimer;
@@ -54,7 +52,7 @@ public class MainActivity extends GameActivity {
         setTheme(R.style.Theme_BubbleShooter);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setContentView(R.layout.activity_main);
-        setContainerResId(R.id.container);
+        setContainerId(R.id.container);
         setLevelManager(new MyLevelManager(this));
         setSoundManager(new MySoundManager(this));
         mDatabaseHelper = new DatabaseHelper(this);

@@ -1,14 +1,12 @@
 package com.nativegame.animalspop.game.player.dot;
 
-import android.graphics.Canvas;
-
-import com.nativegame.animalspop.Utils;
 import com.nativegame.animalspop.game.player.PlayerBubble;
-import com.nativegame.engine.GameEngine;
-import com.nativegame.engine.GameObject;
-import com.nativegame.engine.input.InputController;
+import com.nativegame.nattyengine.Game;
+import com.nativegame.nattyengine.entity.GameObject;
+import com.nativegame.nattyengine.input.TouchController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Oscar Liang on 2022/09/18
@@ -19,75 +17,73 @@ public class DotSystem extends GameObject {
     protected static final int MAX_DOT = 50;
 
     protected final PlayerBubble mParent;
-    protected final float mInitialX, mInitialY;
+    protected final float mStartX;
+    protected final float mStartY;
     protected final float mInterval;   // Interval between each dot
-    protected final ArrayList<Dot> mDotPool = new ArrayList<>(MAX_DOT);
 
-    protected boolean mActivate = false;
+    protected final List<Dot> mDotPool = new ArrayList<>(MAX_DOT);
 
-    public DotSystem(PlayerBubble playerBubble, GameEngine gameEngine) {
+    protected boolean mIsAddToScreen = false;
+
+    public DotSystem(PlayerBubble playerBubble, Game game) {
+        super(game);
         mParent = playerBubble;
-        mInitialX = gameEngine.mScreenWidth / 2f;
-        mInitialY = gameEngine.mScreenHeight * 4 / 5f - gameEngine.mPixelFactor * Utils.BUBBLE_WIDTH;
-        mInterval = gameEngine.mPixelFactor * 200f;   // We want 200px between each dot
+        mStartX = game.getScreenWidth() / 2f;
+        mStartY = game.getScreenHeight() * 4 / 5f - game.getPixelFactor() * 300;
+        mInterval = game.getPixelFactor() * 200f;   // We want 200px between each dot
 
         // Init Dot
         for (int i = 0; i < MAX_DOT; i++) {
-            mDotPool.add(new Dot(gameEngine));
+            mDotPool.add(new Dot(game));
         }
         for (int i = 0; i < MAX_DOT - 1; i++) {
-            mDotPool.get(i).setNextDot(mDotPool.get(i + 1));
+            mDotPool.get(i).mNextDot = mDotPool.get(i + 1);
         }
     }
 
-    public void setDotBitmap(int drawableResId) {
+    public void setDotBitmap(int drawableId) {
         for (int i = 0; i < MAX_DOT; i++) {
-            mDotPool.get(i).setBitmap(drawableResId);
+            mDotPool.get(i).setSpriteBitmap(drawableId);
         }
     }
 
     @Override
-    public void startGame(GameEngine gameEngine) {
-    }
-
-    @Override
-    public void removeFromGameEngine(GameEngine gameEngine) {
-        super.removeFromGameEngine(gameEngine);
+    public void onRemove() {
         // We make sure we remove them
-        if (mActivate) {
-            removeDot(gameEngine);
-            mActivate = false;
+        if (mIsAddToScreen) {
+            removeDot();
+            mIsAddToScreen = false;
         }
     }
 
     @Override
-    public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
-        checkAiming(gameEngine, gameEngine.mInputController);
+    public void onUpdate(long elapsedMillis) {
+        checkAiming(mGame.getTouchController());
     }
 
-    private void checkAiming(GameEngine gameEngine, InputController inputController) {
-        if (inputController.mTouching && mParent.getEnable()) {
-            // We activate the pool one time
-            if (!mActivate) {
-                addDot(gameEngine);
-                mActivate = true;
+    private void checkAiming(TouchController touchController) {
+        if (touchController.mTouching && mParent.getEnable()) {
+            // We add the dots one time
+            if (!mIsAddToScreen) {
+                addDot();
+                mIsAddToScreen = true;
             }
 
             // Get the shooting angle
-            double angle = Utils.getAngle(inputController.mXDown - mInitialX,
-                    inputController.mYDown - mInitialY);
+            double angle = Math.atan2(touchController.mYDown - mStartY,
+                    touchController.mXDown - mStartX);
 
             // We convert angle to dot position
             for (int i = 0; i < MAX_DOT; i++) {
-                double positionX = mInitialX + i * mInterval * Math.cos(angle);
-                double positionY = mInitialY + i * mInterval * Math.sin(angle);
-                setDotPosition(mDotPool.get(i), (float) positionX, (float) positionY);
+                double x = mStartX + i * mInterval * Math.cos(angle);
+                double y = mStartY + i * mInterval * Math.sin(angle);
+                setDotPosition(mDotPool.get(i), (float) x, (float) y);
             }
         } else {
-            // We return the dots to the pool one time
-            if (mActivate) {
-                removeDot(gameEngine);
-                mActivate = false;
+            // We remove the dots one time
+            if (mIsAddToScreen) {
+                removeDot();
+                mIsAddToScreen = false;
             }
         }
     }
@@ -96,23 +92,20 @@ public class DotSystem extends GameObject {
         dot.setPosition(x, y);
     }
 
-    protected void addDot(GameEngine gameEngine) {
+    protected void addDot() {
         for (int i = 0; i < MAX_DOT; i++) {
-            mDotPool.get(i).addToGameEngine(gameEngine, 1);
+            mDotPool.get(i).addToGame();
         }
+        // Show the hint when dot activated
         mParent.showHint();
     }
 
-    protected void removeDot(GameEngine gameEngine) {
+    protected void removeDot() {
         for (int i = 0; i < MAX_DOT; i++) {
-            mDotPool.get(i).removeFromGameEngine(gameEngine);
+            mDotPool.get(i).removeFromGame();
         }
+        // Remove the hint when dot removed
         mParent.removeHint();
-    }
-
-    @Override
-    public void onDraw(Canvas canvas) {
-        // The dots draw by themself
     }
 
 }

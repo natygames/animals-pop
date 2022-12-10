@@ -11,7 +11,7 @@ public enum Combo {
     GOOD,
     WONDERFUL;
 
-    public int getImageResId() {
+    public int getDrawableId() {
         switch (this) {
             case WOW:
                 return R.drawable.text_wow;

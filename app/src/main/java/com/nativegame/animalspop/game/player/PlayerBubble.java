@@ -1,52 +1,55 @@
 package com.nativegame.animalspop.game.player;
 
 import com.nativegame.animalspop.R;
-import com.nativegame.animalspop.Utils;
+import com.nativegame.animalspop.game.Layer;
 import com.nativegame.animalspop.game.MyGameEvent;
 import com.nativegame.animalspop.game.bubble.Bubble;
 import com.nativegame.animalspop.game.bubble.BubbleSystem;
 import com.nativegame.animalspop.game.player.dot.DotSystem;
-import com.nativegame.engine.GameEngine;
-import com.nativegame.engine.GameEvent;
-import com.nativegame.engine.input.InputController;
-import com.nativegame.engine.sprite.BodyType;
-import com.nativegame.engine.sprite.Sprite;
+import com.nativegame.nattyengine.Game;
+import com.nativegame.nattyengine.collision.shape.CircleCollisionShape;
+import com.nativegame.nattyengine.event.GameEvent;
+import com.nativegame.nattyengine.collision.Collidable;
+import com.nativegame.nattyengine.input.TouchController;
+import com.nativegame.nattyengine.entity.sprite.Sprite;
+import com.nativegame.nattyengine.entity.sprite.CollidableSprite;
 
 /**
  * Created by Oscar Liang on 2022/09/18
  */
 
-public abstract class PlayerBubble extends Sprite {
+public abstract class PlayerBubble extends CollidableSprite {
 
     protected final BubbleSystem mBubbleSystem;
     protected final DotSystem mDotSystem;
     protected final PlayerBubbleBg mPlayerBubbleBg;
-    protected final float mStartX, mStartY;
-    private final float mMaxX, mMaxY;
+    protected final float mStartX;
+    protected final float mStartY;
+    private final float mMaxX;
+    private final float mMaxY;
     private final float mSpeed;
 
+    private float mSpeedX;
+    private float mSpeedY;
     private float mRotationSpeed;
-    private float mSpeedX, mSpeedY;
     private boolean mShoot = false;
     private boolean mSwitch = false;
     private boolean mEnable = false;
 
-    protected PlayerBubble(BubbleSystem bubbleSystem, GameEngine gameEngine, int drawableResId) {
-        super(gameEngine, drawableResId, BodyType.Circular);
+    protected PlayerBubble(BubbleSystem bubbleSystem, Game game, int drawableId) {
+        super(game, drawableId);
+        setCollisionShape(new CircleCollisionShape(mWidth, mHeight));
         mBubbleSystem = bubbleSystem;
-        mDotSystem = getDotSystem(gameEngine);
-        mPlayerBubbleBg = new PlayerBubbleBg(gameEngine, R.drawable.bubble_bg);
-
-        // Init player position
-        float radius = mPixelFactor * Utils.BUBBLE_WIDTH;
-        mStartX = gameEngine.mScreenWidth / 2f;
-        mStartY = gameEngine.mScreenHeight * 4 / 5f - radius;
-
-        // Player bound
-        mMaxX = gameEngine.mScreenWidth - mWidth;
-        mMaxY = gameEngine.mScreenHeight;
-
+        mDotSystem = getDotSystem();
+        mPlayerBubbleBg = new PlayerBubbleBg(game, R.drawable.bubble_bg);
+        // Init bubble position
+        mStartX = game.getScreenWidth() / 2f;
+        mStartY = game.getScreenHeight() * 4 / 5f - mPixelFactor * 300;
+        // Player shooting range
+        mMaxX = game.getScreenWidth() - mWidth;
+        mMaxY = game.getScreenHeight();
         mSpeed = mPixelFactor * 8000 / 1000;   // We want to move at 8000px per second
+        mLayer = Layer.BUBBLE_LAYER;
     }
 
     //--------------------------------------------------------
@@ -62,89 +65,89 @@ public abstract class PlayerBubble extends Sprite {
     //========================================================
 
     @Override
-    public void addToGameEngine(GameEngine gameEngine, int layer) {
-        super.addToGameEngine(gameEngine, layer);
-        mDotSystem.addToGameEngine(gameEngine, 0);
-        mPlayerBubbleBg.addToGameEngine(gameEngine, layer - 1);
+    public void onStart() {
+        mX = mStartX - mWidth / 2f;
+        mY = mStartY - mHeight / 2f;
+        mDotSystem.addToGame();
+        mPlayerBubbleBg.addToGame();
     }
 
     @Override
-    public void removeFromGameEngine(GameEngine gameEngine) {
-        super.removeFromGameEngine(gameEngine);
-        mDotSystem.removeFromGameEngine(gameEngine);
-        mPlayerBubbleBg.removeFromGameEngine(gameEngine);
+    public void onRemove() {
+        mDotSystem.removeFromGame();
+        mPlayerBubbleBg.removeFromGame();
     }
 
     @Override
-    public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
-        checkShooting(gameEngine, gameEngine.mInputController);
-        checkSwitching(gameEngine);
-        updatePosition(elapsedMillis, gameEngine);
+    public void onUpdate(long elapsedMillis) {
+        checkShooting(mGame.getTouchController());
+        checkSwitching();
+        updatePosition(elapsedMillis);
         mRotation += mRotationSpeed * elapsedMillis;
         mPlayerBubbleBg.setPosition(mX + mWidth / 2f, mY + mHeight / 2f);
     }
 
-    private void checkShooting(GameEngine gameEngine, InputController inputController) {
+    private void checkShooting(TouchController touchController) {
         if (mShoot) {
             // We convert angle to x speed and y speed
-            double angle = Utils.getAngle(inputController.mXUp - mStartX,
-                    inputController.mYUp - mStartY);
+            double angle = Math.atan2(touchController.mYUp - mStartY,
+                    touchController.mXUp - mStartX);
             mSpeedX = (float) (mSpeed * Math.cos(angle));
             mSpeedY = (float) (mSpeed * Math.sin(angle));
             mRotationSpeed = 360 / 1000f;   // Start rotation
 
             setEnable(false);
-            onBubbleShoot(gameEngine);
+            onBubbleShoot();
             mShoot = false;
         }
     }
 
-    private void checkSwitching(GameEngine gameEngine) {
+    private void checkSwitching() {
         if (mSwitch) {
-            onBubbleSwitch(gameEngine);
+            onBubbleSwitch();
             mSwitch = false;
         }
     }
 
-    private void updatePosition(long elapsedMillis, GameEngine gameEngine) {
+    private void updatePosition(long elapsedMillis) {
         mX += mSpeedX * elapsedMillis;
         if (mX <= 0) {
-            bounceRight(gameEngine);
+            bounceRight();
         }
         if (mX >= mMaxX) {
-            bounceLeft(gameEngine);
+            bounceLeft();
         }
 
         mY += mSpeedY * elapsedMillis;
         if (mY <= -mHeight) {
-            reset(gameEngine);
+            reset();
         }
         if (mY >= mMaxY) {
-            reset(gameEngine);
+            reset();
         }
     }
 
-    protected void bounceRight(GameEngine gameEngine) {
+    protected void bounceRight() {
         mX = 0;
         mSpeedX = -mSpeedX;
     }
 
-    protected void bounceLeft(GameEngine gameEngine) {
+    protected void bounceLeft() {
         mX = mMaxX;
         mSpeedX = -mSpeedX;
     }
 
-    protected abstract DotSystem getDotSystem(GameEngine gameEngine);
+    protected abstract DotSystem getDotSystem();
 
-    protected abstract void onBubbleShoot(GameEngine gameEngine);
+    protected abstract void onBubbleShoot();
 
-    protected abstract void onBubbleSwitch(GameEngine gameEngine);
+    protected abstract void onBubbleSwitch();
 
-    protected abstract void onBubbleHit(GameEngine gameEngine, Bubble bubble);
+    protected abstract void onBubbleHit(Bubble bubble);
 
-    protected abstract void onBubbleReset(GameEngine gameEngine);
+    protected abstract void onBubbleReset();
 
-    public void reset(GameEngine gameEngine) {
+    public void reset() {
         // Stop the bubble
         mSpeedX = 0;
         mSpeedY = 0;
@@ -152,7 +155,7 @@ public abstract class PlayerBubble extends Sprite {
         mRotation = 0;
         mRotationSpeed = 0;
         setEnable(true);
-        onBubbleReset(gameEngine);
+        onBubbleReset();
     }
 
     public void showHint() {
@@ -162,10 +165,10 @@ public abstract class PlayerBubble extends Sprite {
     }
 
     @Override
-    public void onCollision(GameEngine gameEngine, Sprite otherObject) {
+    public void onCollision(Collidable otherObject) {
         if (otherObject instanceof Bubble) {
             Bubble bubble = (Bubble) otherObject;
-            onBubbleHit(gameEngine, bubble);
+            onBubbleHit(bubble);
         }
     }
 
@@ -185,6 +188,28 @@ public abstract class PlayerBubble extends Sprite {
                 }
                 break;
         }
+    }
+
+    protected static class PlayerBubbleBg extends Sprite {
+
+        public PlayerBubbleBg(Game game, int drawableResId) {
+            super(game, drawableResId);
+        }
+
+        public void setPosition(float x, float y) {
+            mX = x - mWidth / 2f;
+            mY = y - mHeight / 2f;
+        }
+
+        @Override
+        public void onStart() {
+            mLayer = Layer.BACKGROUND_LAYER;
+        }
+
+        @Override
+        public void onUpdate(long elapsedMillis) {
+        }
+
     }
 
 }

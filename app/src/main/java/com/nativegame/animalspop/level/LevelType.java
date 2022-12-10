@@ -7,36 +7,40 @@ import com.nativegame.animalspop.R;
  */
 
 public enum LevelType {
+
     POP_BUBBLE,
     COLLECT_ITEM;
 
-    public int getImageResId() {
+    public int getTargetDrawableId() {
         switch (this) {
             case POP_BUBBLE:
                 return R.drawable.target_pop;
             case COLLECT_ITEM:
                 return R.drawable.target_collect;
         }
+
         return 0;
     }
 
-    public int getPlayerResId() {
+    public int getAnimalDrawableId() {
         switch (this) {
             case POP_BUBBLE:
                 return R.drawable.fox_target_pop;
             case COLLECT_ITEM:
                 return R.drawable.fox_target_collect;
         }
+
         return 0;
     }
 
-    public int getStringResId() {
+    public int getTargetStringId() {
         switch (this) {
             case POP_BUBBLE:
                 return R.string.txt_level_type_pop;
             case COLLECT_ITEM:
                 return R.string.txt_level_type_collect;
         }
+
         return 0;
     }
 

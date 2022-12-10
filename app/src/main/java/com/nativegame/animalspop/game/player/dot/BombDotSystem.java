@@ -1,11 +1,11 @@
 package com.nativegame.animalspop.game.player.dot;
 
 import com.nativegame.animalspop.R;
+import com.nativegame.animalspop.game.Layer;
 import com.nativegame.animalspop.game.bubble.Bubble;
 import com.nativegame.animalspop.game.player.booster.BombBubble;
-import com.nativegame.engine.GameEngine;
-import com.nativegame.engine.sprite.BodyType;
-import com.nativegame.engine.sprite.Sprite;
+import com.nativegame.nattyengine.Game;
+import com.nativegame.nattyengine.entity.sprite.Sprite;
 
 /**
  * Created by Oscar Liang on 2022/09/18
@@ -15,67 +15,55 @@ public class BombDotSystem extends DotSystem {
 
     private final BoosterHint mBoosterHint;
 
-    public BombDotSystem(BombBubble bombBubble, GameEngine gameEngine) {
-        super(bombBubble, gameEngine);
-        mBoosterHint = new BoosterHint(gameEngine);
+    public BombDotSystem(BombBubble bombBubble, Game game) {
+        super(bombBubble, game);
+        mBoosterHint = new BoosterHint(game);
+        setDotBitmap(R.drawable.dot_bomb);
     }
 
     @Override
-    public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
-        super.onUpdate(elapsedMillis, gameEngine);
+    public void onUpdate(long elapsedMillis) {
+        super.onUpdate(elapsedMillis);
         checkHint();
     }
 
     private void checkHint() {
-        if (!mActivate) {
+        if (!mIsAddToScreen) {
             return;
         }
-        for (Dot dot : mDotPool) {
+        for (Dot currentDot : mDotPool) {
             // We check the first dot collide with bubble
-            Dot nextDot = dot.mNextDot;
-            if (nextDot != null && !nextDot.mVisible) {
-                // Get the closest bubble collide with previous dot
-                Bubble bubble = getClosestBubble(nextDot.mCollideBubble, dot);
-                if (bubble != null) {
-                    // Update hint position
-                    mBoosterHint.setPosition(bubble.mX + bubble.mWidth / 2f,
-                            bubble.mY + bubble.mHeight / 2f);
-                    return;   // We only check the first found
-                }
+            Dot nextDot = currentDot.mNextDot;
+            if (nextDot != null && nextDot.mIsCollide) {
+                // Get the bubble collide with previous dot
+                Bubble bubble = nextDot.mCollideBubble.getCollidedBubble(currentDot);
+                mBoosterHint.setPosition(bubble.mX + bubble.mWidth / 2f,
+                        bubble.mY + bubble.mHeight / 2f);
+                mBoosterHint.mIsVisible = true;
+                return;   // We only check the first one found
             }
         }
         // Hide the hint if the dot not collide with any bubble
-        mBoosterHint.hide();
-    }
-
-    private Bubble getClosestBubble(Bubble bubble, Dot dot) {
-        if (bubble == null) {
-            return null;
-        }
-        for (Bubble b : bubble.mEdges) {
-            if (b.checkCollision(dot)) {
-                return b;
-            }
-        }
-        return null;
+        mBoosterHint.mIsVisible = false;
     }
 
     @Override
-    protected void addDot(GameEngine gameEngine) {
-        super.addDot(gameEngine);
-        mBoosterHint.addToGameEngine(gameEngine, 3);
+    protected void addDot() {
+        super.addDot();
+        mBoosterHint.addToGame();
     }
 
     @Override
-    protected void removeDot(GameEngine gameEngine) {
-        super.removeDot(gameEngine);
-        mBoosterHint.removeFromGameEngine(gameEngine);
+    protected void removeDot() {
+        super.removeDot();
+        mBoosterHint.removeFromGame();
     }
 
     private static class BoosterHint extends Sprite {
 
-        public BoosterHint(GameEngine gameEngine) {
-            super(gameEngine, R.drawable.bomb_hint, BodyType.None);
+        public BoosterHint(Game game) {
+            super(game, R.drawable.bomb_hint);
+            mLayer = Layer.EFFECT_LAYER;
         }
 
         public void setPosition(float x, float y) {
@@ -83,20 +71,8 @@ public class BombDotSystem extends DotSystem {
             mY = y - mHeight / 2f;
         }
 
-        public void hide() {
-            mX = -mWidth;
-            mY = -mHeight;
-        }
-
         @Override
-        public void startGame(GameEngine gameEngine) {
-        }
-
-        @Override
-        public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
-            if (mY <= -mHeight / 2f) {
-                hide();
-            }
+        public void onUpdate(long elapsedMillis) {
         }
 
     }

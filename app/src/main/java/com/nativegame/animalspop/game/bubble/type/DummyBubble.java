@@ -2,37 +2,37 @@ package com.nativegame.animalspop.game.bubble.type;
 
 import com.nativegame.animalspop.game.bubble.Bubble;
 import com.nativegame.animalspop.game.bubble.BubbleColor;
-import com.nativegame.engine.GameEngine;
+import com.nativegame.nattyengine.Game;
 
 /**
- * Created by Oscar Liang on 2022/09/18
+ * Created by Oscar Liang on 2022/12/10
  */
 
 public class DummyBubble extends Bubble {
 
     public Bubble mTargetBubble;   // A reference to the target bubble
 
-    public DummyBubble(GameEngine gameEngine, int row, int col) {
-        super(gameEngine, row, col, BubbleColor.DUMMY);
-        // We use DUMMY in bubble color here, so it will not be detected as floater in dfs
+    public DummyBubble(Game game) {
+        super(game, BubbleColor.DUMMY);
+        // We use DUMMY in bubble color here, so it will not be detected as floater
     }
 
     @Override
-    public void popBubble(GameEngine gameEngine) {
+    public void popBubble() {
         if (mTargetBubble != null) {
-            mTargetBubble.popBubble(gameEngine);   // Notify the target bubble
+            mTargetBubble.popBubble();
         } else {
-            super.popBubble(gameEngine);
+            super.popBubble();
         }
     }
 
     @Override
-    public void popFloater(GameEngine gameEngine) {
+    public void popFloater() {
         if (mTargetBubble != null) {
             // The target bubble will do the works
-        } else {
-            super.popFloater(gameEngine);
+            return;
         }
+        super.popFloater();
     }
 
 }

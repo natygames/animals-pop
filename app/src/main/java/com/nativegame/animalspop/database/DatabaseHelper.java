@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.nativegame.animalspop.item.Item;
+
 import java.util.ArrayList;
 
 /**
@@ -27,12 +29,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String ITEM_TABLE_NAME = "ITEM_TABLE";
     private static final String ITEM_COLUMN_NAME = "NAME";
     private static final String ITEM_COLUMN_NUM = "NUMBER";
-
-    // Item name
-    public static final String ITEM_COIN = "Coin";
-    public static final String ITEM_COLOR_BALL = "Color_ball";
-    public static final String ITEM_FIREBALL = "Fireball";
-    public static final String ITEM_BOMB = "Bomb";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -65,22 +61,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void initItem(SQLiteDatabase sqLiteDatabase) {
         // Insert coin to db
         ContentValues valuesCoin = new ContentValues();
-        valuesCoin.put(ITEM_COLUMN_NAME, ITEM_COIN);
+        valuesCoin.put(ITEM_COLUMN_NAME, Item.COIN);
         valuesCoin.put(ITEM_COLUMN_NUM, INITIAL_COIN);
 
         // Insert color ball to db
         ContentValues valuesColorBall = new ContentValues();
-        valuesColorBall.put(ITEM_COLUMN_NAME, ITEM_COLOR_BALL);
+        valuesColorBall.put(ITEM_COLUMN_NAME, Item.COLOR_BALL);
         valuesColorBall.put(ITEM_COLUMN_NUM, 0);
 
         // Insert fireball to db
         ContentValues valuesFireball = new ContentValues();
-        valuesFireball.put(ITEM_COLUMN_NAME, ITEM_FIREBALL);
+        valuesFireball.put(ITEM_COLUMN_NAME, Item.FIREBALL);
         valuesFireball.put(ITEM_COLUMN_NUM, 0);
 
         // Insert bomb to db
         ContentValues valuesBomb = new ContentValues();
-        valuesBomb.put(ITEM_COLUMN_NAME, ITEM_BOMB);
+        valuesBomb.put(ITEM_COLUMN_NAME, Item.BOMB);
         valuesBomb.put(ITEM_COLUMN_NUM, 0);
 
         sqLiteDatabase.insert(ITEM_TABLE_NAME, null, valuesCoin);

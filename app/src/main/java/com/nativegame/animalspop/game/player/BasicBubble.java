@@ -3,7 +3,7 @@ package com.nativegame.animalspop.game.player;
 import android.content.Context;
 
 import com.nativegame.animalspop.R;
-import com.nativegame.animalspop.Utils;
+import com.nativegame.animalspop.game.Layer;
 import com.nativegame.animalspop.game.MyGameEvent;
 import com.nativegame.animalspop.game.bubble.Bubble;
 import com.nativegame.animalspop.game.bubble.BubbleColor;
@@ -11,11 +11,10 @@ import com.nativegame.animalspop.game.bubble.BubbleSystem;
 import com.nativegame.animalspop.game.player.dot.DotSystem;
 import com.nativegame.animalspop.level.MyLevel;
 import com.nativegame.animalspop.sound.MySoundEvent;
-import com.nativegame.engine.sprite.BodyType;
-import com.nativegame.engine.GameEngine;
-import com.nativegame.engine.GameEvent;
-import com.nativegame.engine.sprite.Sprite;
-import com.nativegame.engine.particles.ParticleSystem;
+import com.nativegame.nattyengine.Game;
+import com.nativegame.nattyengine.entity.sprite.Sprite;
+import com.nativegame.nattyengine.event.GameEvent;
+import com.nativegame.nattyengine.entity.particles.ParticleSystem;
 
 /**
  * Created by Oscar Liang on 2022/09/18
@@ -30,36 +29,29 @@ public class BasicBubble extends PlayerBubble {
     private final boolean mHintEnable;
 
     public BubbleColor mBubbleColor;
+    private boolean mDetectedCollision;
 
-    public BasicBubble(BubbleSystem bubbleSystem, GameEngine gameEngine) {
-        super(bubbleSystem, gameEngine, BubbleColor.BLANK.getImageResId());
-        mBubbleQueue = new BubbleQueue(((MyLevel) gameEngine.mLevel).mPlayer.toCharArray());
-        mNextBubble = new NextBubble(gameEngine);
-        mCircleBg = new CircleBg(gameEngine);
-        mTrailParticleSystem = new ParticleSystem(gameEngine, R.drawable.sparkle, 50)
-                .setDuration(300)
+    public BasicBubble(BubbleSystem bubbleSystem, Game game) {
+        super(bubbleSystem, game, BubbleColor.BLANK.getDrawableId());
+        mBubbleQueue = new BubbleQueue(((MyLevel) game.getLevel()).mPlayer.toCharArray());
+        mNextBubble = new NextBubble(game);
+        mCircleBg = new CircleBg(game);
+        mTrailParticleSystem = new ParticleSystem(game, R.drawable.sparkle, 50)
+                .setDurationPerParticle(300)
                 .setEmissionRate(ParticleSystem.RATE_HIGH)
                 .setAccelerationX(-2, 2)
                 .setInitialRotation(0, 360)
                 .setRotationSpeed(-720, 720)
                 .setAlpha(255, 0)
-                .setScale(2, 4);
-        mHintEnable = gameEngine.mActivity.getSharedPreferences("prefs_setting", Context.MODE_PRIVATE)
+                .setScale(2, 4)
+                .setLayer(mLayer - 1);
+        mHintEnable = game.getGameActivity().getSharedPreferences("prefs_setting", Context.MODE_PRIVATE)
                 .getBoolean("hint", true);
-    }
-
-    public void init(GameEngine gameEngine) {
-        mX = mStartX - mWidth / 2f;
-        mY = mStartY - mHeight / 2f;
-        addToGameEngine(gameEngine, 2);
-        mNextBubble.init(gameEngine);
-        mCircleBg.init(gameEngine);
-        updateBubbleColor();
     }
 
     public void setBubbleColor(BubbleColor bubbleColor) {
         mBubbleColor = bubbleColor;
-        setBitmap(bubbleColor.getImageResId());
+        setSpriteBitmap(bubbleColor.getDrawableId());
     }
 
     public BubbleQueue getBubbleQueue() {
@@ -67,68 +59,70 @@ public class BasicBubble extends PlayerBubble {
     }
 
     @Override
-    protected DotSystem getDotSystem(GameEngine gameEngine) {
-        return new DotSystem(this, gameEngine);
+    protected DotSystem getDotSystem() {
+        return new DotSystem(this, mGame);
     }
 
     @Override
-    public void startGame(GameEngine gameEngine) {
+    public void onStart() {
+        super.onStart();
+        mCircleBg.addToGame();
+        mNextBubble.addToGame();
+        mTrailParticleSystem.addToGame();
+        updateBubbleColor();
     }
 
     @Override
-    public void addToGameEngine(GameEngine gameEngine, int layer) {
-        super.addToGameEngine(gameEngine, layer);
-        mTrailParticleSystem.addToGameEngine(gameEngine, layer - 1);
+    public void onRemove() {
+        super.onRemove();
+        mNextBubble.removeFromGame();
+        mTrailParticleSystem.removeFromGame();
     }
 
     @Override
-    public void removeFromGameEngine(GameEngine gameEngine) {
-        super.removeFromGameEngine(gameEngine);
-        mNextBubble.removeFromGameEngine(gameEngine);
-        mTrailParticleSystem.removeFromGameEngine(gameEngine);
-    }
-
-    @Override
-    public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
-        super.onUpdate(elapsedMillis, gameEngine);
+    public void onUpdate(long elapsedMillis) {
+        super.onUpdate(elapsedMillis);
         mTrailParticleSystem.setEmissionPosition(mX + mWidth / 2f, mY + mHeight / 2f);
     }
 
     @Override
-    protected void onBubbleShoot(GameEngine gameEngine) {
+    protected void onBubbleShoot() {
         mBubbleQueue.popBubble();   // Update queue
         mTrailParticleSystem.emit();
-        gameEngine.onGameEvent(MyGameEvent.BUBBLE_SHOT);   // Notify the move counter
-        gameEngine.mSoundManager.playSound(MySoundEvent.BUBBLE_SHOOT);
+        gameEvent(MyGameEvent.BUBBLE_SHOT);   // Notify the move counter
+        mGame.getSoundManager().playSound(MySoundEvent.BUBBLE_SHOOT);
+        mDetectedCollision = false;
     }
 
     @Override
-    protected void onBubbleSwitch(GameEngine gameEngine) {
+    protected void onBubbleSwitch() {
         mBubbleQueue.switchBubble();   // Update queue
         updateBubbleColor();
-        gameEngine.mSoundManager.playSound(MySoundEvent.BUBBLE_SWITCH);
+        mGame.getSoundManager().playSound(MySoundEvent.BUBBLE_SWITCH);
     }
 
     @Override
-    protected void onBubbleHit(GameEngine gameEngine, Bubble bubble) {
-        if (bubble.mBubbleColor != BubbleColor.BLANK
-                && mY >= bubble.mY) {
+    protected void onBubbleHit(Bubble bubble) {
+        if (mY >= bubble.mY
+                && !mDetectedCollision) {
             // Notify the target counter
-            gameEngine.onGameEvent(MyGameEvent.BUBBLE_HIT);
+            gameEvent(MyGameEvent.BUBBLE_HIT);
             // Add one bubble to bubble system
-            mBubbleSystem.addBubble(this, bubble);
-            gameEngine.mSoundManager.playSound(MySoundEvent.BUBBLE_HIT);
-            reset(gameEngine);
+            mBubbleSystem.addCollidedBubble(this, bubble);
+            // We make sure the bubble only collide one time
+            mDetectedCollision = true;
+            mGame.getSoundManager().playSound(MySoundEvent.BUBBLE_HIT);
+            reset();
         }
     }
 
     @Override
-    protected void onBubbleReset(GameEngine gameEngine) {
+    protected void onBubbleReset() {
         mX = mStartX - mWidth / 2f;
         mY = mStartY - mHeight / 2f;
         mTrailParticleSystem.stopEmit();
         updateBubbleColor();
-        gameEngine.onGameEvent(MyGameEvent.BUBBLE_CONSUMED);
+        gameEvent(MyGameEvent.BUBBLE_CONSUMED);
     }
 
     private void updateBubbleColor() {
@@ -136,7 +130,7 @@ public class BasicBubble extends PlayerBubble {
         BubbleColor bubbleColor = mBubbleQueue.getBubble();
         if (bubbleColor != null) {
             setBubbleColor(bubbleColor);
-            mDotSystem.setDotBitmap(bubbleColor.getDotResId());
+            mDotSystem.setDotBitmap(bubbleColor.getDotDrawableId());
         } else {
             hide();
         }
@@ -180,14 +174,14 @@ public class BasicBubble extends PlayerBubble {
         }
     }
 
-    private void hide() {
-        mAlpha = 0;
-        mPlayerBubbleBg.mAlpha = 0;
+    private void show() {
+        mIsVisible = true;
+        mPlayerBubbleBg.mIsVisible = true;
     }
 
-    private void show() {
-        mAlpha = 255;
-        mPlayerBubbleBg.mAlpha = 255;
+    private void hide() {
+        mIsVisible = false;
+        mPlayerBubbleBg.mIsVisible = false;
     }
 
     @Override
@@ -214,71 +208,33 @@ public class BasicBubble extends PlayerBubble {
 
     private class NextBubble extends Sprite {
 
-        public NextBubble(GameEngine gameEngine) {
-            super(gameEngine, BubbleColor.BLANK.getImageResId(), BodyType.None);
+        public NextBubble(Game game) {
+            super(game, BubbleColor.BLANK.getDrawableId());
+            mLayer = Layer.BUBBLE_LAYER;
         }
 
         public void setBubbleColor(BubbleColor bubbleColor) {
-            setBitmap(bubbleColor.getImageResId());
-        }
-
-        public void init(GameEngine gameEngine) {
-            float radius = mPixelFactor * Utils.BUBBLE_WIDTH;
-            mX = mStartX - mWidth / 2f + radius;
-            mY = mStartY - mHeight / 2f + radius;
-            mScale = 0.8f;
-            addToGameEngine(gameEngine, 1);
+            setSpriteBitmap(bubbleColor.getDrawableId());
         }
 
         @Override
-        public void startGame(GameEngine gameEngine) {
+        public void onStart() {
+            float distance = mPixelFactor * 300;
+            mX = mStartX + distance - mWidth / 2f;
+            mY = mStartY + distance - mHeight / 2f;
+            mScale = 0.8f;   // We want the next bubble slightly smaller
         }
 
         @Override
-        public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
-            // Nothing should be done here
-        }
-
-        private void hide() {
-            mAlpha = 0;
+        public void onUpdate(long elapsedMillis) {
         }
 
         private void show() {
-            mAlpha = 255;
+            mIsVisible = true;
         }
 
-    }
-
-    private class CircleBg extends Sprite {
-
-        private final float mRotationSpeed;
-
-        public CircleBg(GameEngine gameEngine) {
-            super(gameEngine, R.drawable.player_circle, BodyType.None);
-            mRotationSpeed = -50 / 1000f;   // We want to rotate at 50 degree anticlockwise per second
-        }
-
-        public void init(GameEngine gameEngine) {
-            mX = gameEngine.mScreenWidth / 2f - mWidth / 2f;
-            mY = gameEngine.mScreenHeight * 4 / 5f - mHeight / 2f;
-            addToGameEngine(gameEngine, 0);
-        }
-
-        @Override
-        public void startGame(GameEngine gameEngine) {
-        }
-
-        @Override
-        public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
-            mRotation += mRotationSpeed * elapsedMillis;
-        }
-
-        @Override
-        public void onGameEvent(GameEvent gameEvent) {
-            if (gameEvent == MyGameEvent.SHOW_WIN_DIALOG) {
-                // Hide the circle
-                mAlpha = 0;
-            }
+        private void hide() {
+            mIsVisible = false;
         }
 
     }

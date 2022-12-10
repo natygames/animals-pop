@@ -3,8 +3,8 @@ package com.nativegame.animalspop.level;
 import android.content.Context;
 import android.util.Xml;
 
-import com.nativegame.engine.level.Level;
-import com.nativegame.engine.level.LevelManager;
+import com.nativegame.nattyengine.level.Level;
+import com.nativegame.nattyengine.level.LevelManager;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -28,8 +28,6 @@ public class MyLevelManager extends LevelManager {
 
     public MyLevelManager(Context context) {
         mContext = context;
-        // Use Xml.newPullParser()
-        // https://developer.android.com/training/basics/network-ops/xml
     }
 
     @Override

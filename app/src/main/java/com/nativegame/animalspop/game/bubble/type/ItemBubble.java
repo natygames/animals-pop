@@ -4,10 +4,10 @@ import com.nativegame.animalspop.R;
 import com.nativegame.animalspop.game.MyGameEvent;
 import com.nativegame.animalspop.game.bubble.Bubble;
 import com.nativegame.animalspop.game.bubble.BubbleColor;
-import com.nativegame.animalspop.game.bubble.effect.BubblePopEffect;
-import com.nativegame.animalspop.game.bubble.effect.ItemEffect;
+import com.nativegame.animalspop.game.effect.BubblePopEffect;
+import com.nativegame.animalspop.game.effect.ItemEffect;
 import com.nativegame.animalspop.sound.MySoundEvent;
-import com.nativegame.engine.GameEngine;
+import com.nativegame.nattyengine.Game;
 
 /**
  * Created by Oscar Liang on 2022/09/18
@@ -22,54 +22,50 @@ public class ItemBubble extends Bubble {
 
     private boolean mIsItem = true;
 
-    public ItemBubble(GameEngine gameEngine, int row, int col) {
-        super(gameEngine, row, col, BubbleColor.ITEM);
-
-        mItemEffect = new ItemEffect(gameEngine, R.drawable.nut);
-        mBubblePopEffect = new BubblePopEffect(gameEngine);
+    public ItemBubble(Game game) {
+        super(game, BubbleColor.ITEM);
+        mItemEffect = new ItemEffect(game, R.drawable.nut);
+        mBubblePopEffect = new BubblePopEffect(game);
+        mLayer++;   // We want the item float on top of bubbles
     }
 
     @Override
-    public void startGame(GameEngine gameEngine) {
-        super.startGame(gameEngine);
+    public void onStart() {
+        super.onStart();
+        // Init scale
         mScale = ITEM_SCALE;
         mItemEffect.mScale = ITEM_SCALE;
         mBubblePopEffect.mScale = ITEM_SCALE;
     }
 
     @Override
-    public void addToGameEngine(GameEngine gameEngine, int layer) {
-        super.addToGameEngine(gameEngine, layer + 1);
-    }
-
-    @Override
-    public void popBubble(GameEngine gameEngine) {
+    public void popBubble() {
         if (mIsItem) {
-            // We pop this item if it hasn't been collected
-            popItem(gameEngine);
+            // We pop the item if it hasn't been collected
+            popItem();
         } else {
             // Otherwise, we pop the bubble
-            super.popBubble(gameEngine);
+            super.popBubble();
         }
     }
 
     @Override
-    public void popFloater(GameEngine gameEngine) {
+    public void popFloater() {
         if (mIsItem) {
-            // We pop this item if it hasn't been collected
-            popItem(gameEngine);
+            // We pop the item if it hasn't been collected
+            popItem();
         } else {
             // Otherwise, we pop the floater
-            super.popFloater(gameEngine);
+            super.popFloater();
         }
     }
 
-    private void popItem(GameEngine gameEngine) {
-        mItemEffect.activate(gameEngine, mX + mWidth / 2f, mY + mHeight / 2f, 4);
-        mBubblePopEffect.activate(gameEngine, mX + mWidth / 2f, mY + mHeight / 2f, 4);
+    private void popItem() {
+        mItemEffect.activate(mX + mWidth / 2f, mY + mHeight / 2f);
+        mBubblePopEffect.activate(mX + mWidth / 2f, mY + mHeight / 2f);
         setBubbleColor(BubbleColor.BLANK);
-        gameEngine.onGameEvent(MyGameEvent.COLLECT_ITEM);
-        gameEngine.mSoundManager.playSound(MySoundEvent.COLLECT_ITEM);
+        gameEvent(MyGameEvent.COLLECT_ITEM);
+        mGame.getSoundManager().playSound(MySoundEvent.COLLECT_ITEM);
         mScale = 1;
         mIsItem = false;
     }

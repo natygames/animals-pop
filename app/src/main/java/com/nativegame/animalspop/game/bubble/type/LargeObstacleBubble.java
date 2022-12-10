@@ -1,100 +1,121 @@
 package com.nativegame.animalspop.game.bubble.type;
 
 import com.nativegame.animalspop.R;
+import com.nativegame.animalspop.game.Layer;
 import com.nativegame.animalspop.game.bubble.Bubble;
 import com.nativegame.animalspop.game.bubble.BubbleColor;
 import com.nativegame.animalspop.sound.MySoundEvent;
-import com.nativegame.engine.GameEngine;
-import com.nativegame.engine.particles.ParticleSystem;
-
-import java.util.ArrayList;
+import com.nativegame.nattyengine.Game;
+import com.nativegame.nattyengine.collision.shape.CircleCollisionShape;
+import com.nativegame.nattyengine.collision.shape.RectCollisionShape;
+import com.nativegame.nattyengine.entity.particles.ParticleSystem;
+import com.nativegame.nattyengine.entity.sprite.CollidableSprite;
 
 /**
  * Created by Oscar Liang on 2022/09/18
  */
 
-public class LargeObstacleBubble extends Bubble {
+public class LargeObstacleBubble extends CompositeBubble {
 
     private static final int EXPLOSION_PARTICLES = 10;
-    private static final float ITEM_SCALE = 3.2f;
 
     private final ParticleSystem mExplosionParticleSystem;
-    private final ArrayList<DummyBubble> mDummyBubble = new ArrayList<>(2);
 
-    private int mCollisionNum;
+    private int mCollisionNum = 0;
     public boolean mIsObstacle = true;
 
-    public LargeObstacleBubble(GameEngine gameEngine, int row, int col) {
-        super(gameEngine, row, col, BubbleColor.LARGE_OBSTACLE);
-
-        mExplosionParticleSystem = new ParticleSystem(gameEngine, R.drawable.wood_particle_02, EXPLOSION_PARTICLES)
-                .setLayer(4)
-                .setDuration(600)
+    public LargeObstacleBubble(Game game) {
+        super(game, BubbleColor.LARGE_OBSTACLE);
+        setCollisionShape(new RectCollisionShape(mWidth, mHeight));
+        mExplosionParticleSystem = new ParticleSystem(game, R.drawable.wood_particle_02, EXPLOSION_PARTICLES)
+                .setDurationPerParticle(600)
                 .setSpeedX(-2500, 2500)
                 .setSpeedY(-2500, 200)
                 .setAccelerationY(5)
                 .setInitialRotation(0, 360)
                 .setRotationSpeed(-720, 720)
                 .setAlpha(255, 0, 300)
-                .setScale(1, 0, 300);
-    }
-
-    public void addDummyBubble(DummyBubble dummyBubble) {
-        dummyBubble.mTargetBubble = this;
-        mDummyBubble.add(dummyBubble);
+                .setScale(1, 0, 300)
+                .setLayer(Layer.EFFECT_LAYER);
+        mLayer--;   // We want the obstacle lay below bubbles
     }
 
     @Override
-    public void startGame(GameEngine gameEngine) {
-        super.startGame(gameEngine);
-        mScale = ITEM_SCALE;
-        mCollisionNum = 0;
+    public void onStart() {
+        super.onStart();
+        mX -= mWidth / 3f;
+        mScale = 1.05f;
+        // Init the DummyBubble
+        addDummyBubble((DummyBubble) mEdges[2]);   // Left
+        addDummyBubble((DummyBubble) mEdges[3]);   // Right
     }
 
     @Override
-    public void addToGameEngine(GameEngine gameEngine, int layer) {
-        super.addToGameEngine(gameEngine, layer - 1);
-    }
-
-    @Override
-    public void popBubble(GameEngine gameEngine) {
+    public void popBubble() {
         if (mIsObstacle) {
             mCollisionNum++;
             // If the time of collision is enough
             if (mCollisionNum >= 2) {
                 // We pop the obstacle
-                popLargeObstacle(gameEngine);
+                popLargeObstacle();
             } else {
-                setBitmap(R.drawable.bubble_large_wood_02);
+                setSpriteBitmap(R.drawable.bubble_large_wood_02);
             }
-            gameEngine.mSoundManager.playSound(MySoundEvent.WOOD_EXPLODE);
+            mGame.getSoundManager().playSound(MySoundEvent.WOOD_EXPLODE);
         } else {
             // Otherwise, we pop the bubble
-            super.popBubble(gameEngine);
+            super.popBubble();
         }
     }
 
     @Override
-    public void popFloater(GameEngine gameEngine) {
+    public void popFloater() {
         if (mIsObstacle) {
-            popLargeObstacle(gameEngine);
+            // We pop the obstacle if it hasn't been collected
+            popLargeObstacle();
         } else {
-            super.popFloater(gameEngine);
+            // Otherwise, we pop the floater
+            super.popFloater();
         }
     }
 
-    private void popLargeObstacle(GameEngine gameEngine) {
-        mExplosionParticleSystem.oneShot(gameEngine, mX + mWidth / 2f, mY + mHeight / 2f, EXPLOSION_PARTICLES);
+    private void popLargeObstacle() {
+        mExplosionParticleSystem.oneShot(mX + mWidth / 2f, mY + mHeight / 2f, EXPLOSION_PARTICLES);
         setBubbleColor(BubbleColor.BLANK);
+        setCollisionShape(new CircleCollisionShape(mWidth, mHeight));   // Update collision box
         clearDummyBubble();
-        mScale = 1;
+        mX += mWidth;
+        mLayer++;
         mIsObstacle = false;
     }
 
-    private void clearDummyBubble() {
-        for (DummyBubble dummyBubble : mDummyBubble) {
-            dummyBubble.setBubbleColor(BubbleColor.BLANK);
-            dummyBubble.mTargetBubble = null;
+    @Override
+    public Bubble getCollidedBubble(CollidableSprite collidableSprite) {
+        if (mIsObstacle) {
+            // Check player collide bubble at bottom or side
+            if (collidableSprite.mY > mY + mHeight / 2f) {
+                // Check player collide bubble at right or left bottom
+                if (collidableSprite.mX > mX + mWidth * 3 / 4f) {
+                    return mEdges[5].mEdges[3];
+                } else if (collidableSprite.mX > mX + mWidth / 2f) {
+                    return mEdges[5];
+                } else if (collidableSprite.mX > mX + mWidth / 4f) {
+                    return mEdges[4];
+                } else {
+                    return mEdges[4].mEdges[2];
+                }
+                // [==|====|====|==]
+                //  0.25  0.5  0.75
+            } else {
+                // Check player collide bubble at right or left side
+                if (collidableSprite.mX > mX + mWidth / 2f) {
+                    return mEdges[3].mEdges[3];
+                } else {
+                    return mEdges[2].mEdges[2];
+                }
+            }
+        } else {
+            return super.getCollidedBubble(collidableSprite);
         }
     }
 

@@ -7,10 +7,11 @@ import android.widget.TextView;
 
 import com.nativegame.animalspop.MainActivity;
 import com.nativegame.animalspop.R;
-import com.nativegame.animalspop.Utils;
+import com.nativegame.animalspop.item.Item;
+import com.nativegame.animalspop.ui.UIEffect;
 import com.nativegame.animalspop.database.DatabaseHelper;
 import com.nativegame.animalspop.game.bubble.BubbleSystem;
-import com.nativegame.engine.GameEngine;
+import com.nativegame.nattyengine.Game;
 
 /**
  * Created by Oscar Liang on 2022/09/18
@@ -49,29 +50,29 @@ public class BoosterManager {
         BOMB_BUBBLE
     }
 
-    public BoosterManager(BubbleSystem bubbleSystem, GameEngine gameEngine) {
-        mActivity = gameEngine.mActivity;
+    public BoosterManager(BubbleSystem bubbleSystem, Game game) {
+        mActivity = game.getGameActivity();
         mDatabaseHelper = ((MainActivity) mActivity).getDatabaseHelper();
 
         // Init booster button
-        mBtnColorBubble = (ImageButton) gameEngine.mActivity.findViewById(R.id.btn_color_bubble);
-        mBtnFireBubble = (ImageButton) gameEngine.mActivity.findViewById(R.id.btn_fire_bubble);
-        mBtnBombBubble = (ImageButton) gameEngine.mActivity.findViewById(R.id.btn_bomb_bubble);
+        mBtnColorBubble = (ImageButton) mActivity.findViewById(R.id.btn_color_bubble);
+        mBtnFireBubble = (ImageButton) mActivity.findViewById(R.id.btn_fire_bubble);
+        mBtnBombBubble = (ImageButton) mActivity.findViewById(R.id.btn_bomb_bubble);
 
         // Init booster num text
-        mTxtColorBubble = (TextView) gameEngine.mActivity.findViewById(R.id.txt_color_bubble);
-        mTxtFireBubble = (TextView) gameEngine.mActivity.findViewById(R.id.txt_fire_bubble);
-        mTxtBombBubble = (TextView) gameEngine.mActivity.findViewById(R.id.txt_bomb_bubble);
+        mTxtColorBubble = (TextView) mActivity.findViewById(R.id.txt_color_bubble);
+        mTxtFireBubble = (TextView) mActivity.findViewById(R.id.txt_fire_bubble);
+        mTxtBombBubble = (TextView) mActivity.findViewById(R.id.txt_bomb_bubble);
 
         // Init booster bubble
-        mColorBubble = new ColorBubble(bubbleSystem, gameEngine);
-        mFireBubble = new FireBubble(bubbleSystem, gameEngine);
-        mBombBubble = new BombBubble(bubbleSystem, gameEngine);
+        mColorBubble = new ColorBubble(bubbleSystem, game);
+        mFireBubble = new FireBubble(bubbleSystem, game);
+        mBombBubble = new BombBubble(bubbleSystem, game);
 
-        init(gameEngine);
+        init();
     }
 
-    private void init(GameEngine gameEngine) {
+    private void init() {
         // Init button listener
         mBtnColorBubble.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,11 +81,11 @@ public class BoosterManager {
                     return;
                 }
                 if (mBooster == null) {
-                    mColorBubble.init(gameEngine);
+                    mColorBubble.addToGame();
                     mBooster = Booster.COLOR_BUBBLE;
                     lockButton();
                 } else if (mBooster == Booster.COLOR_BUBBLE) {
-                    mColorBubble.removeFromGameEngine(gameEngine);
+                    mColorBubble.removeFromGame();
                     unlockButton();
                     mBooster = null;
                 }
@@ -98,12 +99,12 @@ public class BoosterManager {
                 }
                 if (mBooster == null) {
                     // Init the fire bubble
-                    mFireBubble.init(gameEngine);
+                    mFireBubble.addToGame();
                     mBooster = Booster.FIRE_BUBBLE;
                     lockButton();
                 } else if (mBooster == Booster.FIRE_BUBBLE) {
                     // Remove the fire bubble
-                    mFireBubble.removeFromGameEngine(gameEngine);
+                    mFireBubble.removeFromGame();
                     unlockButton();
                     mBooster = null;
                 }
@@ -116,11 +117,11 @@ public class BoosterManager {
                     return;
                 }
                 if (mBooster == null) {
-                    mBombBubble.init(gameEngine);
+                    mBombBubble.addToGame();
                     mBooster = Booster.BOMB_BUBBLE;
                     lockButton();
                 } else if (mBooster == Booster.BOMB_BUBBLE) {
-                    mBombBubble.removeFromGameEngine(gameEngine);
+                    mBombBubble.removeFromGame();
                     unlockButton();
                     mBooster = null;
                 }
@@ -128,26 +129,26 @@ public class BoosterManager {
         });
 
         // Init button effect
-        Utils.createButtonEffect(mBtnColorBubble);
-        Utils.createButtonEffect(mBtnFireBubble);
-        Utils.createButtonEffect(mBtnBombBubble);
+        UIEffect.createButtonEffect(mBtnColorBubble);
+        UIEffect.createButtonEffect(mBtnFireBubble);
+        UIEffect.createButtonEffect(mBtnBombBubble);
 
         // Update state
-        Utils.clearColorFilter(mBtnColorBubble);
-        Utils.clearColorFilter(mBtnFireBubble);
-        Utils.clearColorFilter(mBtnBombBubble);
-        Utils.clearColorFilter(mTxtColorBubble);
-        Utils.clearColorFilter(mTxtFireBubble);
-        Utils.clearColorFilter(mTxtBombBubble);
+        UIEffect.clearColorFilter(mBtnColorBubble);
+        UIEffect.clearColorFilter(mBtnFireBubble);
+        UIEffect.clearColorFilter(mBtnBombBubble);
+        UIEffect.clearColorFilter(mTxtColorBubble);
+        UIEffect.clearColorFilter(mTxtFireBubble);
+        UIEffect.clearColorFilter(mTxtBombBubble);
 
         initBoosterText();
     }
 
     public void initBoosterText() {
         // Init booster num from db
-        mColorBubbleNum = mDatabaseHelper.getItemNum(DatabaseHelper.ITEM_COLOR_BALL);
-        mFireBubbleNum = mDatabaseHelper.getItemNum(DatabaseHelper.ITEM_FIREBALL);
-        mBombBubbleNum = mDatabaseHelper.getItemNum(DatabaseHelper.ITEM_BOMB);
+        mColorBubbleNum = mDatabaseHelper.getItemNum(Item.COLOR_BALL);
+        mFireBubbleNum = mDatabaseHelper.getItemNum(Item.FIREBALL);
+        mBombBubbleNum = mDatabaseHelper.getItemNum(Item.BOMB);
 
         // Init booster num text
         mTxtColorBubble.setText(String.valueOf(mColorBubbleNum));
@@ -176,15 +177,15 @@ public class BoosterManager {
         switch (mBooster) {
             case COLOR_BUBBLE:
                 mColorBubbleNum--;
-                mDatabaseHelper.updateItemNum(DatabaseHelper.ITEM_COLOR_BALL, mColorBubbleNum);
+                mDatabaseHelper.updateItemNum(Item.COLOR_BALL, mColorBubbleNum);
                 break;
             case FIRE_BUBBLE:
                 mFireBubbleNum--;
-                mDatabaseHelper.updateItemNum(DatabaseHelper.ITEM_FIREBALL, mFireBubbleNum);
+                mDatabaseHelper.updateItemNum(Item.FIREBALL, mFireBubbleNum);
                 break;
             case BOMB_BUBBLE:
                 mBombBubbleNum--;
-                mDatabaseHelper.updateItemNum(DatabaseHelper.ITEM_BOMB, mBombBubbleNum);
+                mDatabaseHelper.updateItemNum(Item.BOMB, mBombBubbleNum);
                 break;
         }
     }
@@ -210,26 +211,26 @@ public class BoosterManager {
     private void lockButton() {
         switch (mBooster) {
             case FIRE_BUBBLE:
-                Utils.createColorFilter(mBtnBombBubble);
-                Utils.createColorFilter(mBtnColorBubble);
-                Utils.createColorFilter(mTxtBombBubble);
-                Utils.createColorFilter(mTxtColorBubble);
+                UIEffect.createColorFilter(mBtnBombBubble);
+                UIEffect.createColorFilter(mBtnColorBubble);
+                UIEffect.createColorFilter(mTxtBombBubble);
+                UIEffect.createColorFilter(mTxtColorBubble);
                 mBtnBombBubble.setEnabled(false);
                 mBtnColorBubble.setEnabled(false);
                 break;
             case BOMB_BUBBLE:
-                Utils.createColorFilter(mBtnFireBubble);
-                Utils.createColorFilter(mBtnColorBubble);
-                Utils.createColorFilter(mTxtFireBubble);
-                Utils.createColorFilter(mTxtColorBubble);
+                UIEffect.createColorFilter(mBtnFireBubble);
+                UIEffect.createColorFilter(mBtnColorBubble);
+                UIEffect.createColorFilter(mTxtFireBubble);
+                UIEffect.createColorFilter(mTxtColorBubble);
                 mBtnFireBubble.setEnabled(false);
                 mBtnColorBubble.setEnabled(false);
                 break;
             case COLOR_BUBBLE:
-                Utils.createColorFilter(mBtnBombBubble);
-                Utils.createColorFilter(mBtnFireBubble);
-                Utils.createColorFilter(mTxtBombBubble);
-                Utils.createColorFilter(mTxtFireBubble);
+                UIEffect.createColorFilter(mBtnBombBubble);
+                UIEffect.createColorFilter(mBtnFireBubble);
+                UIEffect.createColorFilter(mTxtBombBubble);
+                UIEffect.createColorFilter(mTxtFireBubble);
                 mBtnBombBubble.setEnabled(false);
                 mBtnFireBubble.setEnabled(false);
                 break;
@@ -239,26 +240,26 @@ public class BoosterManager {
     private void unlockButton() {
         switch (mBooster) {
             case FIRE_BUBBLE:
-                Utils.clearColorFilter(mBtnBombBubble);
-                Utils.clearColorFilter(mBtnColorBubble);
-                Utils.clearColorFilter(mTxtBombBubble);
-                Utils.clearColorFilter(mTxtColorBubble);
+                UIEffect.clearColorFilter(mBtnBombBubble);
+                UIEffect.clearColorFilter(mBtnColorBubble);
+                UIEffect.clearColorFilter(mTxtBombBubble);
+                UIEffect.clearColorFilter(mTxtColorBubble);
                 mBtnBombBubble.setEnabled(true);
                 mBtnColorBubble.setEnabled(true);
                 break;
             case BOMB_BUBBLE:
-                Utils.clearColorFilter(mBtnFireBubble);
-                Utils.clearColorFilter(mBtnColorBubble);
-                Utils.clearColorFilter(mTxtFireBubble);
-                Utils.clearColorFilter(mTxtColorBubble);
+                UIEffect.clearColorFilter(mBtnFireBubble);
+                UIEffect.clearColorFilter(mBtnColorBubble);
+                UIEffect.clearColorFilter(mTxtFireBubble);
+                UIEffect.clearColorFilter(mTxtColorBubble);
                 mBtnFireBubble.setEnabled(true);
                 mBtnColorBubble.setEnabled(true);
                 break;
             case COLOR_BUBBLE:
-                Utils.clearColorFilter(mBtnBombBubble);
-                Utils.clearColorFilter(mBtnFireBubble);
-                Utils.clearColorFilter(mTxtBombBubble);
-                Utils.clearColorFilter(mTxtFireBubble);
+                UIEffect.clearColorFilter(mBtnBombBubble);
+                UIEffect.clearColorFilter(mBtnFireBubble);
+                UIEffect.clearColorFilter(mTxtBombBubble);
+                UIEffect.clearColorFilter(mTxtFireBubble);
                 mBtnBombBubble.setEnabled(true);
                 mBtnFireBubble.setEnabled(true);
                 break;
