@@ -12,6 +12,7 @@ import com.nativegame.nattyengine.entity.particles.ParticleSystem;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -113,7 +114,7 @@ public class BombBubble extends BoosterBubble {
     }
 
     private void bfs(Bubble root) {
-        ArrayList<Bubble> removedList = new ArrayList<>();
+        List<Bubble> removedList = new ArrayList<>();
         Queue<Bubble> queue = new LinkedList<>();
         root.mDepth = 0;
         queue.offer(root);

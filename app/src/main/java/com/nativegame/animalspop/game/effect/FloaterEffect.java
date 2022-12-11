@@ -18,8 +18,8 @@ public class FloaterEffect extends Sprite {
 
     private float mSpeedX, mSpeedY;
 
-    public FloaterEffect(Game game, int drawableResId) {
-        super(game, drawableResId);
+    public FloaterEffect(Game game, int drawableId) {
+        super(game, drawableId);
         mMinSpeedX = -mPixelFactor * 1000 / 1000f;
         mMaxSpeedX = mPixelFactor * 1000 / 1000f;
         mMinSpeedY = -mPixelFactor * 4000 / 1000f;

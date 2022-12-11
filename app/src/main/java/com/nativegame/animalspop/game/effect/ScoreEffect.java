@@ -21,8 +21,8 @@ public class ScoreEffect extends Sprite {
 
     private long mTotalTime;
 
-    public ScoreEffect(Game game, int drawableResId) {
-        super(game, drawableResId);
+    public ScoreEffect(Game game, int drawableId) {
+        super(game, drawableId);
         mSpeedY = -mPixelFactor * 500 / 1000f;
         mAlphaSpeed = -350 / 1000f;
         mLayer = Layer.EFFECT_LAYER;

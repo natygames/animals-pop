@@ -7,7 +7,6 @@ import com.nativegame.animalspop.R;
  */
 
 public enum LevelType {
-
     POP_BUBBLE,
     COLLECT_ITEM;
 

@@ -2,8 +2,6 @@ package com.nativegame.animalspop;
 
 import android.app.Activity;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -35,14 +33,14 @@ public class AdManager {
         RewardedAd.load(mActivity, mActivity.getString(R.string.txt_admob_reward),
                 adRequest, new RewardedAdLoadCallback() {
                     @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                    public void onAdFailedToLoad(LoadAdError loadAdError) {
                         // Handle the error
                         // Toast.makeText(mActivity, "Fail!!!", Toast.LENGTH_SHORT).show();
                         mRewardedAd = null;
                     }
 
                     @Override
-                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                    public void onAdLoaded(RewardedAd rewardedAd) {
                         // Toast.makeText(mActivity, "Succeed!!!", Toast.LENGTH_SHORT).show();
                         mRewardedAd = rewardedAd;
                     }
@@ -85,7 +83,7 @@ public class AdManager {
 
         mRewardedAd.show(mActivity, new OnUserEarnedRewardListener() {
             @Override
-            public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+            public void onUserEarnedReward(RewardItem rewardItem) {
                 // Handle the reward
                 // Toast.makeText(mActivity, "Reward!", Toast.LENGTH_SHORT).show();
                 mListener.onEarnReward();

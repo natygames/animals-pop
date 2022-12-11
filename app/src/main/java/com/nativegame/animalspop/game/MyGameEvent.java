@@ -7,7 +7,6 @@ import com.nativegame.nattyengine.event.GameEvent;
  */
 
 public enum MyGameEvent implements GameEvent {
-
     // Player input event
     SHOOT_BUBBLE,
     SWITCH_BUBBLE,
@@ -31,5 +30,4 @@ public enum MyGameEvent implements GameEvent {
     EMIT_CONFETTI,
     SHOW_WIN_DIALOG,
     ADD_EXTRA_MOVE
-
 }

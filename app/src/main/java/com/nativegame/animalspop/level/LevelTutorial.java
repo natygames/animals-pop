@@ -7,7 +7,6 @@ import com.nativegame.animalspop.R;
  */
 
 public enum LevelTutorial {
-
     SHOOT_BUBBLE,
     BOUNCE_BUBBLE,
     SWITCH_BUBBLE,

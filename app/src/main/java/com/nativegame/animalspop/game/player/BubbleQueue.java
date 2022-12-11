@@ -3,6 +3,7 @@ package com.nativegame.animalspop.game.player;
 import com.nativegame.animalspop.game.bubble.BubbleColor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Oscar Liang on 2022/09/18
@@ -14,7 +15,7 @@ public class BubbleQueue {
 
     private final char[] mBubbleChars;
 
-    private final ArrayList<BubbleColor> mBubbleList = new ArrayList<>();
+    private final List<BubbleColor> mBubbleList = new ArrayList<>();
 
     public BubbleQueue(char[] array) {
         mBubbleChars = array;

@@ -7,7 +7,6 @@ import com.nativegame.nattyengine.sound.SoundEvent;
  */
 
 public enum MySoundEvent implements SoundEvent {
-
     // Bubble sound
     BUBBLE_POP,
     BUBBLE_HIT,
@@ -35,5 +34,4 @@ public enum MySoundEvent implements SoundEvent {
     SWEEP_OUT,
     BUTTON_CLICK,
     WHEEL_SPIN
-
 }

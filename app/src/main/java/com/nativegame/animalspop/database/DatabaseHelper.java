@@ -37,18 +37,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         // This method will call only when the app first init
-        String statement = "CREATE TABLE " + STAR_TABLE_NAME + " ("
+        String statementCreateStar = "CREATE TABLE " + STAR_TABLE_NAME + " ("
                 + STAR_COLUMN_LEVEL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + STAR_COLUMN_STAR + " INTEGER"
                 + ")";
 
-        String statement2 = "CREATE TABLE " + ITEM_TABLE_NAME + " ("
+        String statementCreateItem = "CREATE TABLE " + ITEM_TABLE_NAME + " ("
                 + ITEM_COLUMN_NAME + " TEXT PRIMARY KEY, "
                 + ITEM_COLUMN_NUM + " INTEGER"
                 + ")";
 
-        sqLiteDatabase.execSQL(statement);
-        sqLiteDatabase.execSQL(statement2);
+        sqLiteDatabase.execSQL(statementCreateStar);
+        sqLiteDatabase.execSQL(statementCreateItem);
         initItem(sqLiteDatabase);
     }
 

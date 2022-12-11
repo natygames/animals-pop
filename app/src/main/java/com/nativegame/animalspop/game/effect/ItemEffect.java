@@ -19,8 +19,8 @@ public class ItemEffect extends Sprite {
     private float mSpeedY;
     private long mTotalTime;
 
-    public ItemEffect(Game game, int drawableResId) {
-        super(game, drawableResId);
+    public ItemEffect(Game game, int drawableId) {
+        super(game, drawableId);
         // Init the target position
         mTargetX = mGame.getScreenWidth() * 0.84f - mWidth / 2f;
         mTargetY = -mHeight / 2f;
